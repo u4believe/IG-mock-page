@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#f4f5f7;color:#222;font-family:'Figtree',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+*{box-sizing:border-box}
+a{color:#2f6fbf;text-decoration:none}
+a:hover{color:#1d4f8f}
+button,input,select{font-family:inherit}
+</style>
+</helmet>
+
+<div style="min-height:100vh;background:#f4f5f7;font-family:'Figtree',system-ui,sans-serif;color:#222">
+
+<div style="position:sticky;top:0;z-index:40">
+<div style="background:#222;height:32px;display:flex;align-items:center;justify-content:space-between;color:#fff">
+<a href="IG%20Landing%20v2.dc.html" aria-label="IG home" style="font-family:Arial,Helvetica,sans-serif;height:32px;width:34px;background:#d81e05;color:#fff;font-weight:600;font-size:21px;letter-spacing:-0.07em;display:flex;align-items:center;justify-content:center">IG</a>
+<div style="display:flex;align-items:center;height:32px">
+<sc-if value="{{ isDesk }}" hint-placeholder-val="{{ true }}">
+<div style="display:flex;gap:16px;font-size:14px;font-weight:700;padding-right:16px"><a href="#" style="color:#fff">Inbox</a><a href="#" style="color:#fff">Community</a><a href="#" style="color:#fff">Academy</a><a href="#" style="color:#fff">Help</a></div>
+</sc-if>
+<div style="position:relative;height:32px">
+<button onClick="{{ toggleUser }}" style="height:32px;border:none;border-left:1px solid #444;background:none;color:#fff;display:flex;align-items:center;gap:8px;padding:0 10px;cursor:pointer;text-align:left"><svg width="20" height="20" viewBox="0 0 20 20"><circle cx="10" cy="10" r="10" fill="#fff"></circle><circle cx="10" cy="7.6" r="3.3" fill="#222"></circle><path d="M3.8 16a7 7 0 0 1 12.4 0" fill="#222"></path></svg><span style="font-size:11px;font-weight:600;line-height:1.25;min-width:110px">{{ fullName }}<br>My IG</span><svg width="10" height="6" viewBox="0 0 10 6" fill="none" stroke="#fff" stroke-width="1.6"><path d="m1 1 4 4 4-4"></path></svg></button>
+<sc-if value="{{ userOpen }}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute;right:0;top:32px;width:200px;background:#fff;box-shadow:0 6px 20px rgba(0,0,0,.18);padding:6px 0;z-index:50">
+<button onClick="{{ goSettings }}" style="width:100%;text-align:left;background:none;border:none;padding:10px 16px;font-size:14px;cursor:pointer;color:#222">Settings</button>
+<a href="IG%20Landing%20v2.dc.html" style="display:block;padding:10px 16px;font-size:14px;color:#222">Log out</a>
+</div>
+</sc-if>
+</div>
+</div>
+</div>
+<div style="background:#fff;border-bottom:1px solid #dcdde0;box-shadow:0 1px 2px rgba(0,0,0,.05)">
+<div style="max-width:1320px;margin:0 auto;padding:0 clamp(12px,8.4vw,132px);display:flex;gap:clamp(20px,3vw,48px);overflow-x:auto">
+<sc-for list="{{ tabs }}" as="t" hint-placeholder-count="4"><button onClick="{{ t.pick }}" style="background:none;border:none;padding:8px 0 4px;font-size:15px;font-weight:500;color:#222;cursor:pointer;white-space:nowrap;border-bottom:3px solid {{ t.line }}">{{ t.label }}</button></sc-for>
+</div>
+</div>
+</div>
+
+<div style="max-width:1320px;margin:0 auto;padding:24px clamp(12px,8.4vw,132px) 80px">
+
+<sc-if value="{{ tDash }}" hint-placeholder-val="{{ true }}">
+<div data-screen-label="Dashboard" style="display:grid;grid-template-columns:{{ dashCols }};gap:20px;align-items:start">
+<div style="display:flex;flex-direction:column;gap:24px">
+<div style="background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.1)">
+<h1 style="font-size:24px;font-weight:600;margin:0;padding:16px 24px">Hello {{ firstUpper }}</h1>
+<sc-if value="{{ needsDocs }}" hint-placeholder-val="{{ true }}">
+<div style="background:#fdf6ea;border-top:1px solid #f0e4cc;padding:16px 24px;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap">
+<div><div style="font-size:18px;font-weight:500;margin-bottom:2px">Activate your account</div><div style="font-size:14px">Your account is almost active. Before you start dealing, please upload your documents.</div></div>
+<button onClick="{{ upload }}" style="background:#2e9e4f;color:#fff;border:1px solid #1f7a39;border-radius:2px;padding:4px 14px;font-size:14px;font-weight:500;cursor:pointer">Upload now</button>
+</div>
+</sc-if>
+</div>
+<button style="background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.1);border:none;padding:16px 24px;display:flex;align-items:center;gap:18px;text-align:left;cursor:pointer;color:#222"><span style="width:28px;height:28px;border-radius:50%;background:#3a7fc6;color:#fff;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:300;line-height:1">+</span><span><span style="display:block;font-size:15px;font-weight:600">Add an account</span><span style="display:block;font-size:11px;color:#666">Trade CFDs, MT5 and more</span></span></button>
+
+<div style="background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.1)">
+<div style="display:grid;grid-template-columns:{{ acctCols }};align-items:center;padding:12px 24px;border-bottom:1px solid #ccc;font-size:13px;color:#555"><span style="font-size:17px;font-weight:600;color:#222">CFDs</span><sc-if value="{{ wideAcct }}" hint-placeholder-val="{{ true }}"><span>Funds</span><span>Margin</span><span>Available</span><span style="text-align:right;padding-right:24px">Profit/Loss</span></sc-if></div>
+<div style="background:{{ liveBg }};padding:16px 24px 18px">
+<div style="display:grid;grid-template-columns:{{ acctCols }};align-items:start;gap:8px">
+<div><div style="font-size:15px;font-weight:500;display:flex;align-items:center;gap:6px">CFD <svg width="14" height="14" viewBox="0 0 14 14" fill="#999"><path d="M1 13l1-4 8-8 3 3-8 8z"></path></svg></div><span style="display:inline-block;border:1px solid #222;font-size:9px;padding:0 2px;margin:2px 0">PENDING</span><div style="font-size:10px">Account ID: {{ liveId }}</div></div>
+<sc-if value="{{ docsDone }}" hint-placeholder-val="{{ false }}"><span style="font-size:16px">$0.00</span><span style="font-size:16px">$0.00</span><span style="font-size:16px">$0.00</span><span style="font-size:16px;text-align:right;padding-right:24px">$0.00</span></sc-if>
+</div>
+<div style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-top:8px">
+<button style="width:148px;height:28px;border:1px solid #3a7fc6;border-radius:2px;background:#fff;color:#2f6fbf;font-size:14px;cursor:pointer;box-shadow:0 1px 2px rgba(0,0,0,.15)">Open platform</button>
+<sc-if value="{{ needsDocs }}" hint-placeholder-val="{{ true }}"><button onClick="{{ upload }}" style="background:none;border:none;color:#2f6fbf;text-decoration:underline;font-size:13px;cursor:pointer">Activate your account</button></sc-if>
+<sc-if value="{{ docsDone }}" hint-placeholder-val="{{ false }}"><button style="height:24px;padding:0 28px;border:1px solid #1f5a99;border-radius:2px;background:#3a7fc6;color:#fff;font-size:13px;font-weight:600;cursor:pointer">+ Add funds</button></sc-if>
+<a href="#" style="font-size:11px">Enable Advanced Charts-ProRealTime</a>
+</div>
+</div>
+<sc-if value="{{ docsDone }}" hint-placeholder-val="{{ false }}"><div style="text-align:center;font-size:13px;color:#555;padding:24px 16px;border-top:1px solid #eee">See your performance analytics here when you close 10 trades.</div></sc-if>
+</div>
+
+<sc-if value="{{ noDemo }}" hint-placeholder-val="{{ true }}">
+<div style="background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.1)">
+<div style="font-size:17px;font-weight:500;padding:12px 24px;border-bottom:1px solid #ccc">Develop your trading skills with risk-free demo accounts.</div>
+<div style="display:flex;align-items:center;gap:14px;padding:20px 24px;flex-wrap:wrap"><button onClick="{{ goDemo }}" style="width:166px;height:24px;border:1px solid #3a7fc6;border-radius:2px;background:#fff;color:#2f6fbf;font-size:11px;cursor:pointer">Open demo accounts</button><span style="font-size:14px;flex:1;min-width:220px">Demo account is not a live trading account and thus all funds and trades are virtual.</span></div>
+</div>
+</sc-if>
+<sc-if value="{{ hasDemo }}" hint-placeholder-val="{{ false }}">
+<div style="background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.1);border:1px solid #bbb">
+<div style="display:grid;grid-template-columns:{{ acctCols }};align-items:center;padding:12px 24px;border-bottom:1px solid #ccc;background:#f4f5f7;font-size:13px;color:#555"><span style="font-size:17px;font-weight:600;color:#222">CFD Demo</span><sc-if value="{{ wideAcct }}" hint-placeholder-val="{{ true }}"><span>Funds</span><span>Margin</span><span>Available</span><span style="text-align:right;padding-right:24px">Profit/Loss</span></sc-if></div>
+<div style="padding:16px 24px 18px">
+<div style="display:grid;grid-template-columns:{{ acctCols }};align-items:start;gap:8px">
+<div><div style="font-size:15px;font-weight:500;display:flex;align-items:center;gap:6px">CFD <svg width="14" height="14" viewBox="0 0 14 14" fill="#999"><path d="M1 13l1-4 8-8 3 3-8 8z"></path></svg></div><div style="font-size:10px">Account ID: {{ demoId }}</div></div>
+<span style="font-size:16px">$20,000.00</span><span style="font-size:16px">$0.00</span><span style="font-size:16px">$20,000.00</span><span style="font-size:16px;text-align:right;padding-right:24px">$0.00</span>
+</div>
+<div style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-top:8px">
+<button style="width:148px;height:28px;border:1px solid #1f5a99;border-radius:2px;background:#3a7fc6;color:#fff;font-size:14px;cursor:pointer">Open platform</button>
+<button style="height:24px;padding:0 10px;border:1px solid #3a7fc6;border-radius:2px;background:#fff;color:#2f6fbf;font-size:13px;cursor:pointer">+ Add virtual funds</button>
+<a href="#" style="font-size:11px">Enable Advanced Charts-ProRealTime</a>
+</div>
+</div>
+</div>
+</sc-if>
+</div>
+
+<div style="display:flex;flex-direction:column;gap:18px">
+<div style="background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.1);padding-bottom:8px">
+<div style="background:#000;border-radius:16px;overflow:hidden;display:grid;grid-template-columns:1fr 1fr;min-height:296px">
+<div style="padding:44px 20px 20px;color:#fff;display:flex;flex-direction:column">
+<div style="font-size:clamp(22px,2vw,28px);font-weight:800;line-height:1.15;letter-spacing:-0.03em;margin-bottom:18px">Partner with the World’s No.1 CFD Provider*</div>
+<div style="display:flex;flex-direction:column;gap:6px;font-size:14px;font-weight:600;margin-bottom:16px"><span>✓ Earn Up to $2,045 CPA</span><span>✓ Unlock Ongoing High Revenue Share</span></div>
+<a href="#" style="align-self:flex-start;background:#087a52;color:#fff;border-radius:999px;padding:8px 18px;font-size:11px;font-weight:700">Inquire Today</a>
+</div>
+<div style="background:#dadada"><img src="assets/photos/experienced-traders.webp" alt="Partners" style="width:100%;height:100%;object-fit:cover;display:block"></div>
+</div>
+<p style="font-size:8px;line-height:1.35;margin:8px 12px 0">*Based on revenue published financial statements, August 2024.<br>IG products are complex, high risk and losses can be substantial. 71% of retail client accounts lose money when trading CFDs, with this investment provider.</p>
+</div>
+<div style="background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.1)">
+<div style="font-size:17px;font-weight:500;padding:10px 24px;border-bottom:1px solid #ccc">Live prices</div>
+<div style="padding:8px 24px 14px;font-variant-numeric:tabular-nums">
+<div style="display:grid;grid-template-columns:minmax(0,1.6fr) 1fr 1fr 1fr .9fr;font-size:11px;color:#555;padding-bottom:6px;gap:6px"><span>Markets</span><span style="text-align:right">Sell</span><span style="text-align:right">Buy</span><span style="text-align:right">Change</span><span style="text-align:right">%Change</span></div>
+<sc-for list="{{ prices }}" as="p" hint-placeholder-count="6"><div style="display:grid;grid-template-columns:minmax(0,1.6fr) 1fr 1fr 1fr .9fr;font-size:14px;height:25px;align-items:center;gap:6px"><span style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ p.n }}</span><span style="text-align:right">{{ p.s }}</span><span style="text-align:right">{{ p.b }}</span><span style="text-align:right;color:{{ p.c }}">{{ p.ch }}</span><span style="text-align:right;color:{{ p.c }}">{{ p.pc }}</span></div></sc-for>
+</div>
+</div>
+<div style="background:#087a52;color:#fff;display:grid;grid-template-columns:1fr 1fr;min-height:160px;overflow:hidden">
+<div style="padding:14px 16px;font-size:clamp(24px,2.2vw,32px);font-weight:800;line-height:1.05;letter-spacing:-0.02em">Refer your friends and earn up to $10,000*</div>
+<div style="background:#dadada"><img src="assets/photos/new-traders.webp" alt="Refer a friend" style="width:100%;height:100%;object-fit:cover;display:block"></div>
+</div>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ tLive }}" hint-placeholder-val="{{ false }}">
+<div data-screen-label="Live accounts" style="display:grid;grid-template-columns:{{ acctPageCols }};gap:20px;align-items:start">
+<div style="background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.1);padding:16px 16px 16px">
+<div style="font-size:18px;font-weight:500;margin-bottom:8px">You are viewing:</div>
+<div style="height:34px;border:1px solid #bbb;background:#f4f5f7;display:flex;align-items:center;justify-content:space-between;padding:0 10px;font-size:16px;margin-bottom:10px">CFD (Pending)<span style="font-size:9px">▼</span></div>
+<div style="display:flex;justify-content:space-between;font-size:14px;padding:3px 0">Account ID<span style="font-size:16px;font-weight:500;letter-spacing:.04em">{{ liveId }}</span></div>
+<div style="display:flex;justify-content:space-between;font-size:14px;padding:3px 0">Running profit / loss:<span style="font-size:16px">$0.00</span></div>
+<div style="display:flex;justify-content:space-between;font-size:14px;padding:3px 0 14px">Funds:<span style="font-size:16px">$0.00</span></div>
+<sc-for list="{{ liveMenu }}" as="m" hint-placeholder-count="13"><div style="font-size:13px;padding:4px 10px 4px {{ m.pad }};border-bottom:1px solid #e3e3e3;background:{{ m.bg }}">{{ m.l }}</div></sc-for>
+</div>
+<div>
+<div style="background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.1);max-width:372px;padding-bottom:16px">
+<div style="font-size:15px;font-weight:500;padding:8px 24px;border-bottom:1px solid #ccc;margin-bottom:8px">Balances</div>
+<sc-for list="{{ liveBal }}" as="b" hint-placeholder-count="10"><div style="display:flex;justify-content:space-between;gap:20px;margin:0 24px;padding:3px 0;border-bottom:1px solid #e3e3e3;font-size:13px;color:#666"><span style="max-width:150px">{{ b.l }}</span><span style="color:#222">{{ b.v }}</span></div></sc-for>
+</div>
+<h2 style="font-size:18px;font-weight:500;margin:34px 0 14px">Recent activity</h2>
+<div style="background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.1)">
+<div style="display:flex;gap:26px;padding:0 24px;border-bottom:1px solid #ccc;font-size:14px;font-weight:500"><span style="padding:8px 0 6px;border-bottom:3px solid #3a7fc6">Transactions</span><span style="padding:8px 0 6px">Past activity</span><span style="padding:8px 0 6px">Profit/loss breakdown</span></div>
+<div style="padding:24px 48px 48px;font-size:14px">No recent activity</div>
+</div>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ tDemoEmpty }}" hint-placeholder-val="{{ false }}">
+<div data-screen-label="Demo accounts – open" style="background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.1);padding:16px 16px 24px;max-width:1280px">
+<h2 style="font-size:24px;font-weight:600;margin:0 0 6px">Open a demo account today</h2>
+<p style="font-size:14px;margin:0 0 8px">Develop your trading skills with one of our risk-free demo accounts. You'll get $20,000 of virtual money to practise with, and the opportunity to explore our award-winning platform.</p>
+<label style="display:flex;align-items:center;gap:6px;font-size:13px;margin-bottom:16px;cursor:pointer"><input type="checkbox" checked="{{ ack }}" onChange="{{ toggleAck }}" style="margin:0;accent-color:#3a7fc6">I understand that a demo account is not a live trading account and that all funds and trades are virtual.</label>
+<button onClick="{{ createDemo }}" disabled="{{ noAck }}" style="height:32px;padding:0 24px;border:none;border-radius:2px;background:{{ ackBg }};color:{{ ackFg }};font-size:14px;cursor:{{ ackCur }}">Create demo account</button>
+</div>
+</sc-if>
+
+<sc-if value="{{ tDemo }}" hint-placeholder-val="{{ false }}">
+<div data-screen-label="Demo accounts" style="display:grid;grid-template-columns:{{ acctPageCols }};gap:20px;align-items:start">
+<div style="background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.1);padding:16px">
+<div style="font-size:18px;font-weight:500;margin-bottom:8px">You are viewing:</div>
+<div style="height:34px;border:1px solid #bbb;background:#f4f5f7;display:flex;align-items:center;justify-content:space-between;padding:0 10px;font-size:16px;margin-bottom:10px">CFD<span style="font-size:9px">▼</span></div>
+<div style="display:flex;justify-content:space-between;font-size:14px;padding:3px 0">Account ID<span style="font-size:16px;font-weight:500;letter-spacing:.04em">{{ demoId }}</span></div>
+<div style="display:flex;justify-content:space-between;font-size:14px;padding:3px 0">Running profit / loss:<span style="font-size:16px">$0.00</span></div>
+<div style="display:flex;justify-content:space-between;font-size:14px;padding:3px 0 14px">Funds:<span style="font-size:16px">$20,000.00</span></div>
+<sc-for list="{{ demoMenu }}" as="m" hint-placeholder-count="5"><div style="font-size:13px;padding:4px 10px 4px {{ m.pad }};border-bottom:1px solid #e3e3e3;background:{{ m.bg }}">{{ m.l }}</div></sc-for>
+</div>
+<div>
+<div style="background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.1);max-width:372px;padding-bottom:16px">
+<div style="font-size:15px;font-weight:500;padding:8px 24px;border-bottom:1px solid #ccc;margin-bottom:8px">Balances</div>
+<sc-for list="{{ demoBal }}" as="b" hint-placeholder-count="10"><div style="display:flex;justify-content:space-between;gap:20px;margin:0 24px;padding:3px 0;border-bottom:1px solid #e3e3e3;font-size:13px;color:#666"><span style="max-width:150px">{{ b.l }}</span><span style="color:#222">{{ b.v }}</span></div></sc-for>
+</div>
+<h2 style="font-size:18px;font-weight:500;margin:34px 0 14px">Recent activity</h2>
+<div style="background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.1);padding-bottom:24px">
+<div style="display:flex;gap:26px;padding:0 24px;border-bottom:1px solid #ccc;font-size:14px;font-weight:500"><span style="padding:8px 0 6px;border-bottom:3px solid #3a7fc6">Transactions</span><span style="padding:8px 0 6px">Past activity</span><span style="padding:8px 0 6px">Profit/loss breakdown</span></div>
+<div style="padding:8px 24px 0;overflow-x:auto">
+<div style="display:grid;grid-template-columns:118px 118px minmax(160px,1fr) 118px 118px;font-size:11px;color:#555;padding:4px 0">
+<span>Date</span><span>Type</span><span>Description</span><span>Ccy</span><span>Amount</span></div>
+<div style="display:grid;grid-template-columns:118px 118px minmax(160px,1fr) 118px 118px;font-size:14px;padding:4px 0;border-bottom:1px solid #e3e3e3"><span>{{ today }}</span><span>DEPO</span><span>Bank Deposit</span><span>$</span><span style="color:#2f6fbf">$20,000.00</span></div>
+<a href="#" style="display:inline-block;font-size:14px;margin-top:4px">See more</a>
+</div>
+</div>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ tSet }}" hint-placeholder-val="{{ false }}">
+<div data-screen-label="Settings" style="display:grid;grid-template-columns:{{ setCols }};gap:20px;align-items:start">
+<div style="background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.1);padding:16px 16px 36px">
+<sc-for list="{{ setMenu }}" as="g" hint-placeholder-count="4">
+<div style="margin-bottom:24px">
+<div style="font-size:15px;font-weight:600;margin-bottom:4px">{{ g.t }}</div>
+<sc-for list="{{ g.items }}" as="i" hint-placeholder-count="3"><button onClick="{{ i.pick }}" style="width:100%;text-align:left;border:none;border-bottom:1px solid #e3e3e3;background:{{ i.bg }};padding:4px 16px;font-size:13px;color:#222;cursor:pointer">{{ i.l }}</button></sc-for>
+</div>
+</sc-for>
+</div>
+<div style="background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.1);padding-bottom:32px">
+<div style="font-size:18px;font-weight:500;padding:16px 24px;border-bottom:1px solid #ccc">{{ setTitle }}</div>
+<sc-if value="{{ setPersonal }}" hint-placeholder-val="{{ true }}">
+<div style="margin:0 24px">
+<div style="display:flex;justify-content:space-between;align-items:center;padding:14px 0 10px;border-bottom:1px solid #ddd"><div><div style="font-size:14px;color:#666">Email address</div><div style="font-size:16px">{{ maskEmail }}</div></div><span style="color:#888;font-size:22px">›</span></div>
+<div style="display:flex;justify-content:space-between;align-items:center;padding:14px 0 10px;border-bottom:1px solid #ddd"><div><div style="font-size:14px;color:#666">Phone(s)</div><div style="font-size:11px;color:#666;margin:4px 0 2px">Daytime tel</div><div style="font-size:16px">{{ maskPhone }}</div></div><span style="color:#888;font-size:22px">›</span></div>
+<div style="display:flex;justify-content:space-between;align-items:center;padding:14px 0 10px;border-bottom:1px solid #ddd"><div style="line-height:1.75"><div style="font-size:14px;color:#666;line-height:1.4;margin-bottom:4px">Address</div><sc-for list="{{ addrLines }}" as="a" hint-placeholder-count="5"><div style="font-size:16px">{{ a }}</div></sc-for></div><span style="color:#888;font-size:22px">›</span></div>
+</div>
+</sc-if>
+<sc-if value="{{ setOther }}" hint-placeholder-val="{{ false }}"><div style="padding:24px;font-size:14px;color:#555">Manage your {{ setTitleLower }} here.</div></sc-if>
+</div>
+</div>
+</sc-if>
+
+</div>
+
+<button aria-label="Open chat" style="position:fixed;right:19px;bottom:20px;width:48px;height:48px;border-radius:50%;background:#087a52;color:#fff;border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:60;box-shadow:0 4px 14px rgba(0,0,0,.25)" style-hover="background:#066443"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M4 5h11a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H9l-4 3v-3H4a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z"></path><path d="M17 9h3a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2h-1v3l-4-3h-2"></path><path d="M6 9h7M6 12h5"></path></svg></button>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { w: typeof innerWidth === 'number' ? innerWidth : 1400, tab: 'dash', userOpen: false, ack: false, demo: false, docs: false, setItem: 'Personal details', u: {} };
+  componentDidMount() {
+    this.r = () => this.setState({ w: innerWidth }); addEventListener('resize', this.r);
+    let u = {}; try { u = JSON.parse(localStorage.getItem('ej_user') || '{}'); } catch (e) {}
+    let d = {}; try { d = JSON.parse(localStorage.getItem('ej_acct') || '{}'); } catch (e) {}
+    const t = (location.hash || '').slice(1);
+    this.setState({ u, demo: !!d.demo, docs: !!d.docs, tab: ['dash', 'live', 'demo', 'set'].includes(t) ? t : 'dash' });
+  }
+  componentWillUnmount() { removeEventListener('resize', this.r); }
+  save(o) { this.setState(o, () => { try { localStorage.setItem('ej_acct', JSON.stringify({ demo: this.state.demo, docs: this.state.docs })); } catch (e) {} }); }
+  renderVals() {
+    const s = this.state, u = s.u, isMobile = s.w < 900, set = o => this.setState(o);
+    const first = u.first || 'Okeke', last = u.last || 'Onyedike';
+    const email = u.email || 'okeke@gmail.com', [en, ed] = email.split('@');
+    const phone = (u.phone || '08012345348').replace(/\D/g, '');
+    const d = new Date(), today = String(d.getDate()).padStart(2, '0') + '/' + String(d.getMonth() + 1).padStart(2, '0') + '/' + d.getFullYear();
+    const go = tab => () => { set({ tab, userOpen: false }); try { history.replaceState(null, '', '#' + tab); } catch (e) {} };
+    const menu = (arr, sub) => arr.map((l, i) => ({ l, bg: i === 0 ? '#dcdde0' : '#fff', pad: sub.includes(l) ? '16px' : '10px' }));
+    const bal = f => [['Equity', f], ['Aggregate profit/loss', '$0.00'], ['Profit/loss (guaranteed stops)', '$0.00'], ['Profit/loss (non-guaranteed stops)', '$0.00'], ['Funds', f], ['Margin', '$0.00'], ['Margin (guaranteed stops)', '$0.00'], ['Margin (non-guaranteed stops)', '$0.00'], ['Equity used', '-']].map(([l, v]) => ({ l, v }));
+    const groups = [['Your details', ['Personal details', 'Refer a friend']], ['Security', ['Username and password', 'Two-factor authentication', 'Login activity']], ['Trade settings', ['Data feeds', 'ProRealTime', 'API keys']], ['Platform preferences', ['Price and dealing alerts', 'Marketing communication']]];
+    const mask = (v, keepStart) => v ? v.slice(0, keepStart) + '*'.repeat(Math.max(v.length - keepStart, 2)) : '';
+    const R = '#d32f2f', G = '#222';
+    return {
+      isDesk: !isMobile, wideAcct: s.w >= 700, fullName: (first + ' ' + last).toUpperCase(), firstUpper: first.toUpperCase(),
+      userOpen: s.userOpen, toggleUser: () => set({ userOpen: !s.userOpen }), goSettings: go('set'),
+      tabs: [['dash', 'Dashboard'], ['live', 'Live accounts'], ['demo', 'Demo accounts'], ['set', 'Settings']].map(([k, label]) => ({ label, pick: go(k), line: s.tab === k ? '#3a7fc6' : 'transparent' })),
+      tDash: s.tab === 'dash', tLive: s.tab === 'live', tDemoEmpty: s.tab === 'demo' && !s.demo, tDemo: s.tab === 'demo' && s.demo, tSet: s.tab === 'set',
+      dashCols: s.w < 1180 ? 'minmax(0,1fr)' : 'minmax(0,1fr) minmax(0,500px)',
+      acctCols: s.w < 700 ? 'minmax(0,1fr)' : 'minmax(0,1.6fr) 1fr 1fr 1fr 1fr',
+      acctPageCols: isMobile ? 'minmax(0,1fr)' : '292px minmax(0,1fr)', setCols: isMobile ? 'minmax(0,1fr)' : '296px minmax(0,1fr)',
+      needsDocs: !s.docs, docsDone: s.docs, upload: () => this.save({ docs: true }), liveBg: s.docs ? '#fff' : '#eaf3fb',
+      liveId: 'OWW9A', demoId: 'Z6G11D', noDemo: !s.demo, hasDemo: s.demo, goDemo: go('demo'),
+      ack: s.ack, noAck: !s.ack, toggleAck: () => set({ ack: !s.ack }), ackBg: s.ack ? '#3a7fc6' : '#f0f0f0', ackFg: s.ack ? '#fff' : '#9a9a9a', ackCur: s.ack ? 'pointer' : 'default',
+      createDemo: () => { if (s.ack) this.save({ demo: true }); },
+      prices: [['Oil - US Crude ($1)', '8233.4', '8238.2', '-240.5', '-2.84'], ['Gold Spot ($1)', '3741.68', '3741.78', '-107.30', '-2.79'], ['USD/JPY', '159.287', '159.297', '-0.080', '-0.05'], ['GBP/USD', '1.31415', '1.31430', '-0.00676', '-0.51'], ['Wall Street Cash', '46215.0', '46219.0', '+182.4', '+0.40'], ['Spot Silver ($1)', '4498.7', '4502.7', '-237.7', '-5.02']]
+        .map(([n, sv, b, ch, pc]) => ({ n, s: sv, b, ch, pc, c: ch.startsWith('-') ? R : ch.startsWith('+') ? '#2e7d32' : G })),
+      liveMenu: menu(['Overview', 'Payments', 'Deposit funds', 'Withdraw funds', 'Verification', 'Card / bank details', 'Currency conversion', 'Send proof of payment', 'Trade analytics', 'History', 'Statements', 'Corporate actions', 'Documents'], ['Deposit funds', 'Withdraw funds', 'Verification', 'Card / bank details', 'Currency conversion', 'Send proof of payment']),
+      demoMenu: menu(['Overview', 'Payments', 'Deposit funds', 'History', 'Statements'], ['Deposit funds']),
+      liveBal: bal('$0.00'), demoBal: bal('$20,000.00'), today,
+      setMenu: groups.map(([t, items]) => ({ t, items: items.map(l => ({ l, bg: s.setItem === l ? '#dcdde0' : '#fff', pick: () => set({ setItem: l }) })) })),
+      setTitle: s.setItem, setTitleLower: s.setItem.toLowerCase(), setPersonal: s.setItem === 'Personal details', setOther: s.setItem !== 'Personal details',
+      maskEmail: mask(en, 3) + '@' + (ed || 'gmail.com'), maskPhone: '*'.repeat(Math.max(phone.length - 3, 4)) + phone.slice(-3),
+      addrLines: [mask(u.house || '23', 1), mask(u.street || 'Trans Amadi Road', 1) + '.', (u.city || 'Port Harcourt').toUpperCase(), (u.postal || '500272').slice(0, 3) + '***', u.country || 'Malaysia']
+    };
+  }
+}
+</script>
+</body>
+</html>

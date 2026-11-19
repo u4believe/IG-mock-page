@@ -1,0 +1,9 @@
+{
+  "name": "ej-site",
+  "version": "1.0.0",
+  "private": true,
+  "description": "EJ trading platform frontend (static prototype)",
+  "scripts": {
+    "start": "node server.js"
+  }
+}

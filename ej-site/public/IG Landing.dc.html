@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#f3f2f2;color:#201e1d;font-family:'Archivo',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+*{box-sizing:border-box}
+a{color:#201e1d;text-decoration:none}
+a:hover{color:#ec3013}
+button{font-family:inherit}
+:focus-visible{outline:2px solid #ec3013;outline-offset:2px}
+::selection{background:#fbd3cb}
+@keyframes kmarquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@keyframes kpulse{0%,100%{opacity:1}50%{opacity:.25}}
+</style>
+</helmet>
+
+<div style="min-height:100vh;background:#f3f2f2;font-family:'Archivo',system-ui,sans-serif;color:#201e1d">
+
+<sc-if value="{{ showRisk }}" hint-placeholder-val="{{ true }}">
+<div data-screen-label="Risk warning" style="background:#201e1d;color:#f3f2f2;font-size:13px;line-height:1.45;padding:10px clamp(16px,4vw,40px);border-bottom:1px solid #3a3634">
+<div style="max-width:1320px;margin:0 auto;text-wrap:pretty">CFDs are complex instruments and come with a high risk of losing money rapidly due to leverage. 74% of retail investor accounts lose money when trading CFDs with this provider. Consider whether you understand how CFDs work and whether you can afford to take the high risk of losing your money.</div>
+</div>
+</sc-if>
+
+<div style="background:#201e1d;color:#f3f2f2">
+<div style="max-width:1320px;margin:0 auto;padding:0 clamp(16px,4vw,40px);height:40px;display:flex;align-items:center;justify-content:space-between;font-size:13px;font-weight:600">
+<div style="display:flex;gap:2px;height:100%">
+<a href="#" style="color:#f3f2f2;display:flex;align-items:center;padding:0 14px;background:#3a3634;height:100%">Personal</a>
+<a href="#" style="color:#b5b0ad;display:flex;align-items:center;padding:0 14px;height:100%">Institutional</a>
+</div>
+<div style="display:flex;gap:20px;align-items:center">
+<a href="#" style="color:#f3f2f2">Academy</a>
+<a href="#" style="color:#f3f2f2">Help</a>
+<a href="#" style="color:#201e1d;background:#f3f2f2;padding:6px 14px">Log in</a>
+</div>
+</div>
+</div>
+
+<header style="position:sticky;top:0;z-index:50;background:#f3f2f2;border-bottom:2px solid #201e1d" onMouseLeave="{{ closeMenu }}">
+<div style="max-width:1320px;margin:0 auto;padding:0 clamp(16px,4vw,40px);height:76px;display:flex;align-items:center;gap:32px">
+<a href="#" style="display:flex;align-items:center;gap:10px;color:#201e1d;flex-shrink:0">
+<span style="width:28px;height:28px;background:#ec3013;display:block"></span>
+<span style="font-family:Arial,Helvetica,sans-serif;color:#d81e05;font-size:22px;font-weight:600;letter-spacing:-0.02em">IG</span>
+</a>
+<sc-if value="{{ isDesk }}" hint-placeholder-val="{{ true }}">
+<nav style="display:flex;height:100%;flex:1">
+<sc-for list="{{ menus }}" as="m" hint-placeholder-count="5">
+<button onMouseEnter="{{ m.enter }}" onClick="{{ m.enter }}" style="background:none;border:none;border-bottom:{{ m.underline }};margin-bottom:-2px;padding:0 16px;height:78px;display:flex;align-items:center;gap:6px;font-size:15px;font-weight:500;color:#201e1d;cursor:pointer">{{ m.label }}<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="square"><path d="m6 9 6 6 6-6"></path></svg></button>
+</sc-for>
+</nav>
+<div style="display:flex;align-items:center;gap:20px">
+<div style="position:relative">
+<button onClick="{{ toggleLang }}" aria-label="Language" style="background:none;border:none;display:flex;align-items:center;gap:6px;font-size:14px;font-weight:500;color:#201e1d;cursor:pointer;padding:0"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>{{ langCode }}<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"></path></svg></button>
+<sc-if value="{{ langOpen }}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute;right:0;top:calc(100% + 14px);min-width:200px;background:#f3f2f2;border:2px solid #201e1d;z-index:80;box-shadow:0 16px 32px -12px rgba(32,30,29,.35)">
+<sc-for list="{{ langs }}" as="l" hint-placeholder-count="6">
+<button onClick="{{ l.pick }}" style="width:100%;display:flex;justify-content:space-between;align-items:center;gap:16px;background:{{ l.bg }};color:{{ l.fg }};border:none;border-bottom:1px solid #d8d6d5;padding:12px 14px;font-size:14px;font-weight:500;cursor:pointer;text-align:left">{{ l.name }}<span style="font-family:'JetBrains Mono',monospace;font-size:12px">{{ l.code }}</span></button>
+</sc-for>
+</div>
+</sc-if>
+</div>
+<a href="#" style="background:#ec3013;color:#fff;font-weight:600;font-size:15px;padding:12px 18px;display:flex;align-items:center;gap:10px" style-hover="background:#c8240c;color:#fff">Open live account<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></a>
+<button aria-label="Search" style="background:none;border:none;padding:6px;cursor:pointer;color:#201e1d;display:flex"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg></button>
+</div>
+</sc-if>
+<sc-if value="{{ isMobile }}" hint-placeholder-val="{{ false }}">
+<div style="flex:1"></div>
+<a href="#" style="background:#ec3013;color:#fff;font-weight:600;font-size:14px;padding:10px 14px">Open account</a>
+<button aria-label="Menu" onClick="{{ toggleMob }}" style="background:#201e1d;color:#f3f2f2;border:none;width:44px;height:44px;display:flex;align-items:center;justify-content:center;cursor:pointer">
+<sc-if value="{{ mob }}" hint-placeholder-val="{{ false }}"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M18 6 6 18M6 6l12 12"></path></svg></sc-if>
+<sc-if value="{{ notMob }}" hint-placeholder-val="{{ true }}"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M4 6h16M4 12h16M4 18h16"></path></svg></sc-if>
+</button>
+</sc-if>
+</div>
+
+<sc-if value="{{ menuOpen }}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute;left:0;right:0;top:100%;background:#f3f2f2;border-top:2px solid #201e1d;border-bottom:2px solid #201e1d;box-shadow:0 24px 40px -20px rgba(32,30,29,.35)">
+<div style="max-width:1320px;margin:0 auto;padding:36px clamp(16px,4vw,40px) 40px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:2px">
+<sc-for list="{{ activeCols }}" as="col" hint-placeholder-count="3">
+<div style="padding-right:24px">
+<div style="font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#5c5856;padding-bottom:12px;border-bottom:2px solid #201e1d;margin-bottom:12px">{{ col.title }}</div>
+<div style="display:flex;flex-direction:column">
+<sc-for list="{{ col.links }}" as="l" hint-placeholder-count="4">
+<a href="#" style="font-size:16px;font-weight:500;padding:8px 0;display:flex;justify-content:space-between;border-bottom:1px solid #d8d6d5">{{ l }}<span style="color:#ec3013">→</span></a>
+</sc-for>
+</div>
+</div>
+</sc-for>
+<div style="background:#201e1d;color:#f3f2f2;padding:24px;display:flex;flex-direction:column;justify-content:space-between;gap:24px">
+<div style="font-size:22px;font-weight:800;line-height:1.15;letter-spacing:-0.01em">Practise with $20,000 in virtual funds.</div>
+<a href="#" style="color:#f3f2f2;font-weight:600;display:flex;align-items:center;gap:8px;border-top:2px solid #f3f2f2;padding-top:12px">Try a demo account →</a>
+</div>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ mobOpenPanel }}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute;left:0;right:0;top:100%;height:calc(100vh - 76px);overflow:auto;background:#f3f2f2;border-top:2px solid #201e1d;padding:8px clamp(16px,4vw,40px) 40px">
+<sc-for list="{{ mobMenus }}" as="m" hint-placeholder-count="5">
+<div style="border-bottom:2px solid #201e1d">
+<button onClick="{{ m.toggle }}" style="width:100%;background:none;border:none;padding:18px 0;display:flex;justify-content:space-between;align-items:center;font-size:20px;font-weight:600;color:#201e1d;cursor:pointer">{{ m.label }}<span style="font-size:24px;font-weight:400;color:#ec3013">{{ m.sign }}</span></button>
+<sc-if value="{{ m.open }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;padding-bottom:16px">
+<sc-for list="{{ m.links }}" as="l" hint-placeholder-count="4">
+<a href="#" style="font-size:16px;padding:10px 0;color:#201e1d">{{ l }}</a>
+</sc-for>
+</div>
+</sc-if>
+</div>
+</sc-for>
+<div style="padding:18px 0 4px"><div style="font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#5c5856;margin-bottom:10px">Language</div><div style="display:flex;flex-wrap:wrap;gap:6px"><sc-for list="{{ langs }}" as="l" hint-placeholder-count="6"><button onClick="{{ l.pick }}" style="background:{{ l.bg }};color:{{ l.fg }};border:2px solid #201e1d;padding:8px 12px;font-size:14px;font-weight:600;cursor:pointer">{{ l.code }}</button></sc-for></div></div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:24px">
+<a href="#" style="background:#ec3013;color:#fff;font-weight:600;padding:16px">Open live account</a>
+<a href="#" style="border:2px solid #201e1d;font-weight:600;padding:14px">Try demo</a>
+</div>
+</div>
+</sc-if>
+</header>
+
+<main>
+
+<section data-screen-label="Hero" style="border-bottom:2px solid #201e1d">
+<div style="max-width:1320px;margin:0 auto;padding:clamp(40px,7vw,96px) clamp(16px,4vw,40px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,440px),1fr));gap:clamp(32px,5vw,72px);align-items:start">
+<div>
+<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:28px">
+<span style="font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;background:#201e1d;color:#f3f2f2;padding:6px 10px">17,000+ markets</span>
+<span style="font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;border:2px solid #201e1d;padding:4px 10px">24/7 support</span>
+</div>
+<h1 style="font-size:clamp(44px,6.4vw,92px);line-height:.95;letter-spacing:-0.035em;font-weight:800;margin:0 0 28px;text-wrap:balance">Trade the world's markets with precision.</h1>
+<p style="font-size:clamp(18px,1.6vw,21px);line-height:1.5;margin:0 0 36px;max-width:560px;color:#3a3634;text-wrap:pretty">Go long or short on forex, indices, shares, commodities and crypto from one account — and earn up to $2,500 cashback in your first 30 days.<sup style="font-size:12px">2</sup></p>
+<div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:28px">
+<a href="#" style="background:#ec3013;color:#fff;font-weight:600;font-size:17px;padding:18px 22px;min-width:240px;display:flex;justify-content:space-between;align-items:center;gap:24px" style-hover="background:#c8240c;color:#fff">Open live account<span>→</span></a>
+<a href="#" style="border:2px solid #201e1d;font-weight:600;font-size:17px;padding:16px 22px;min-width:220px;display:flex;justify-content:space-between;align-items:center;gap:24px" style-hover="background:#201e1d;color:#f3f2f2">Try demo account<span>→</span></a>
+</div>
+<p style="font-size:15px;margin:0;color:#3a3634">Questions? Talk to us anytime on <a href="#" onClick="{{ openChat }}" style="color:#a8200c;font-weight:600;text-decoration:underline;text-underline-offset:3px">web chat</a> or <a href="#" style="color:#a8200c;font-weight:600;text-decoration:underline;text-underline-offset:3px">WhatsApp</a>.</p>
+</div>
+
+<div style="aspect-ratio:4/5;border:2px solid #201e1d;background:repeating-linear-gradient(135deg,#eae9e9 0 10px,#e2e0df 10px 20px);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:13px;color:#5c5856;max-height:640px;width:100%">hero photo · trader with phone</div>
+</div>
+</section>
+
+<section data-screen-label="Ticker" style="border-bottom:2px solid #201e1d;overflow:hidden;background:#f3f2f2" onMouseEnter="{{ pauseTicker }}" onMouseLeave="{{ resumeTicker }}">
+<div style="display:flex;width:max-content;animation:kmarquee {{ tickerDur }} linear infinite;animation-play-state:{{ tickerState }}">
+<sc-for list="{{ tickerItems }}" as="t" hint-placeholder-count="8">
+<a href="#" style="display:flex;align-items:center;gap:18px;padding:18px 28px;border-right:2px solid #201e1d;white-space:nowrap">
+<span style="font-weight:800;font-size:15px">{{ t.name }}</span>
+<span style="font-variant-numeric:tabular-nums;font-size:15px">{{ t.price }}</span>
+<span style="font-family:'JetBrains Mono',monospace;font-size:13px;color:{{ t.chgColor }}">{{ t.arrow }} {{ t.pct }}</span>
+</a>
+</sc-for>
+</div>
+</section>
+
+<section data-screen-label="App showcase" style="background:#201e1d;color:#f3f2f2;border-bottom:2px solid #201e1d">
+<div style="max-width:1320px;margin:0 auto;padding:clamp(56px,8vw,112px) clamp(16px,4vw,40px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,400px),1fr));gap:clamp(40px,6vw,88px);align-items:center">
+<div>
+<div style="font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#ec3013;margin-bottom:20px">IG app</div>
+<h2 style="font-size:clamp(36px,4.6vw,64px);line-height:1;letter-spacing:-0.03em;font-weight:800;margin:0 0 24px;text-wrap:balance">Your watchlist, live in your pocket.</h2>
+<p style="font-size:18px;line-height:1.55;color:#cfcac7;margin:0 0 40px;max-width:520px;text-wrap:pretty">Track prices, set alerts and place trades in two taps. The same account, positions and charts across web, iOS and Android.</p>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:2px;background:#4a4644;border:2px solid #4a4644;max-width:520px">
+<div style="background:#201e1d;padding:22px">
+<div style="font-size:clamp(32px,3.4vw,44px);font-weight:800;letter-spacing:-0.02em">400,000+</div>
+<div style="font-size:14px;color:#cfcac7;margin-top:4px">active clients worldwide</div>
+</div>
+<div style="background:#ec3013;padding:22px;color:#fff">
+<div style="font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase">Award 2026</div>
+<div style="font-size:22px;font-weight:800;line-height:1.1;margin-top:8px">Best Trading App</div>
+</div>
+</div>
+<div style="display:flex;gap:12px;margin-top:28px;flex-wrap:wrap">
+<a href="#" style="border:2px solid #f3f2f2;color:#f3f2f2;padding:12px 18px;font-weight:600;min-width:170px">App Store →</a>
+<a href="#" style="border:2px solid #f3f2f2;color:#f3f2f2;padding:12px 18px;font-weight:600;min-width:170px">Google Play →</a>
+</div>
+</div>
+
+<div style="justify-self:center;width:100%;max-width:400px;background:#f3f2f2;color:#201e1d;border:10px solid #0f0e0d;box-shadow:0 40px 80px -30px rgba(0,0,0,.7)">
+<div style="display:flex;justify-content:space-between;align-items:center;padding:12px 18px;font-size:13px;font-weight:600"><span>11:47</span><span style="font-family:'JetBrains Mono',monospace;font-size:11px">5G ▮▮▮</span></div>
+<div style="display:flex;justify-content:space-between;align-items:center;padding:6px 18px 14px;border-bottom:2px solid #201e1d">
+<div style="display:flex;align-items:center;gap:8px"><span style="width:14px;height:14px;background:#ec3013;display:block"></span><span style="font-weight:800;font-size:18px">Watchlists</span></div>
+<span style="font-size:24px;color:#ec3013;line-height:1">+</span>
+</div>
+<div style="display:flex;border-bottom:2px solid #201e1d">
+<sc-for list="{{ wlTabs }}" as="w" hint-placeholder-count="3">
+<button onClick="{{ w.pick }}" style="flex:1;background:{{ w.bg }};color:{{ w.fg }};border:none;padding:10px 6px;font-size:13px;font-weight:600;cursor:pointer">{{ w.label }}</button>
+</sc-for>
+</div>
+<div style="display:grid;grid-template-columns:minmax(0,1.6fr) 1fr 1fr .8fr;gap:8px;padding:8px 18px;font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#5c5856;border-bottom:1px solid #d8d6d5"><span>Market</span><span style="text-align:right">Sell</span><span style="text-align:right">Buy</span><span style="text-align:right">Chg</span></div>
+<sc-for list="{{ wlRows }}" as="r" hint-placeholder-count="6">
+<div style="display:grid;grid-template-columns:minmax(0,1.6fr) 1fr 1fr .8fr;gap:8px;align-items:center;padding:12px 18px;border-bottom:1px solid #d8d6d5;font-size:13px;font-variant-numeric:tabular-nums">
+<span style="font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ r.name }}</span>
+<span style="text-align:right">{{ r.bid }}</span>
+<span style="text-align:right">{{ r.offer }}</span>
+<span style="text-align:right;font-family:'JetBrains Mono',monospace;font-size:12px;color:{{ r.chgColor }}">{{ r.pct }}</span>
+</div>
+</sc-for>
+<div style="display:grid;grid-template-columns:repeat(4,1fr);border-top:2px solid #201e1d;font-size:11px;font-weight:600;text-align:center">
+<span style="padding:12px 0;color:#ec3013">Watchlist</span><span style="padding:12px 0">Positions</span><span style="padding:12px 0">Search</span><span style="padding:12px 0">Account</span>
+</div>
+</div>
+</div>
+</section>
+
+<section data-screen-label="Markets" style="border-bottom:2px solid #201e1d">
+<div style="max-width:1320px;margin:0 auto;padding:clamp(56px,8vw,112px) clamp(16px,4vw,40px)">
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:24px 64px;align-items:end;margin-bottom:48px">
+<h2 style="font-size:clamp(36px,4.6vw,64px);line-height:1;letter-spacing:-0.03em;font-weight:800;margin:0;text-wrap:balance">17,000+ markets. One account.</h2>
+<p style="font-size:18px;line-height:1.55;margin:0;color:#3a3634;text-wrap:pretty">Trade global markets around the clock with spreads from 0.6 points. <a href="#" style="color:#a8200c;font-weight:600;text-decoration:underline;text-underline-offset:3px">View all CFD markets</a></p>
+</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:2px;background:#201e1d;border:2px solid #201e1d">
+<sc-for list="{{ marketCards }}" as="c" hint-placeholder-count="6">
+<a href="#" style="background:#f3f2f2;padding:28px;display:flex;flex-direction:column;gap:20px;min-height:300px;color:#201e1d" style-hover="background:#eae9e9;color:#201e1d">
+<div style="display:flex;justify-content:space-between;align-items:baseline">
+<span style="font-family:'JetBrains Mono',monospace;font-size:13px;color:#5c5856">{{ c.n }}</span>
+<span style="font-size:20px;color:#ec3013">↗</span>
+</div>
+<div>
+<div style="font-size:32px;font-weight:800;letter-spacing:-0.02em;margin-bottom:8px">{{ c.title }}</div>
+<div style="font-size:16px;line-height:1.45;color:#3a3634;text-wrap:pretty">{{ c.desc }}</div>
+</div>
+<div style="margin-top:auto;border-top:2px solid #201e1d;padding-top:14px">
+<div style="display:flex;justify-content:space-between;align-items:baseline;font-size:14px;margin-bottom:8px">
+<span style="font-weight:600">{{ c.q.name }}</span>
+<span style="font-variant-numeric:tabular-nums;font-weight:600">{{ c.q.price }} <span style="font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:400;color:{{ c.q.chgColor }}">{{ c.q.pct }}</span></span>
+</div>
+<svg viewBox="0 0 100 30" preserveAspectRatio="none" style="width:100%;height:40px;display:block"><polyline points="{{ c.q.spark }}" fill="none" stroke="{{ c.q.chgColor }}" stroke-width="1.6" vector-effect="non-scaling-stroke"></polyline></svg>
+</div>
+</a>
+</sc-for>
+</div>
+</div>
+</section>
+
+<section data-screen-label="Rewards" style="border-bottom:2px solid #201e1d">
+<div style="max-width:1320px;margin:0 auto;padding:clamp(56px,8vw,112px) clamp(16px,4vw,40px)">
+<h2 style="font-size:clamp(36px,4.6vw,64px);line-height:1;letter-spacing:-0.03em;font-weight:800;margin:0 0 16px;text-wrap:balance">Rewards that grow with you.</h2>
+<p style="font-size:18px;line-height:1.55;margin:0 0 48px;color:#3a3634;max-width:640px">Earn additional funds based on how — and how much — you trade.</p>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:2px;background:#201e1d;border:2px solid #201e1d">
+<div style="background:#ec3013;color:#fff;padding:32px;min-height:420px;display:flex;flex-direction:column">
+<div style="font-size:clamp(64px,7vw,104px);font-weight:800;letter-spacing:-0.04em;line-height:.9">$2,500</div>
+<div style="margin-top:auto">
+<div style="font-size:28px;font-weight:800;margin-bottom:10px">Welcome cashback</div>
+<p style="font-size:16px;line-height:1.5;margin:0 0 24px">Get up to $2,500 back on your first 30 days of trading.<sup>2</sup></p>
+<a href="#" style="color:#fff;font-weight:600;border-top:2px solid #fff;padding-top:12px;display:flex;justify-content:space-between">Learn more<span>→</span></a>
+</div>
+</div>
+<div style="background:#f3f2f2;padding:32px;min-height:420px;display:flex;flex-direction:column">
+<div style="display:flex;flex-direction:column;gap:8px;align-items:flex-start">
+<span style="font-family:'JetBrains Mono',monospace;font-size:14px;background:#201e1d;color:#f3f2f2;padding:6px 10px">+ $154</span>
+<span style="font-family:'JetBrains Mono',monospace;font-size:14px;border:2px solid #201e1d;padding:4px 10px;margin-left:48px">+ $13</span>
+<span style="font-family:'JetBrains Mono',monospace;font-size:14px;background:#ec3013;color:#fff;padding:6px 10px;margin-left:20px">+ $420</span>
+</div>
+<div style="margin-top:auto">
+<div style="font-size:28px;font-weight:800;margin-bottom:10px">Refer a friend</div>
+<p style="font-size:16px;line-height:1.5;margin:0 0 24px;color:#3a3634">Earn up to $10,000 by inviting friends to trade with IG.<sup>3</sup></p>
+<a href="#" style="font-weight:600;border-top:2px solid #201e1d;padding-top:12px;display:flex;justify-content:space-between">Learn more<span style="color:#ec3013">→</span></a>
+</div>
+</div>
+<div style="background:#f3f2f2;padding:32px;min-height:420px;display:flex;flex-direction:column">
+<div style="display:flex;align-items:flex-end;gap:8px;height:140px;border-bottom:2px solid #201e1d">
+<sc-for list="{{ bars }}" as="b" hint-placeholder-count="6">
+<div style="flex:1;display:flex;flex-direction:column;align-items:stretch;justify-content:flex-end;height:100%">
+<div style="height:{{ b.h }};background:{{ b.c }}"></div>
+</div>
+</sc-for>
+</div>
+<div style="display:flex;gap:8px;font-family:'JetBrains Mono',monospace;font-size:11px;color:#5c5856;margin-top:6px">
+<sc-for list="{{ bars }}" as="b" hint-placeholder-count="6"><span style="flex:1">{{ b.l }}</span></sc-for>
+</div>
+<div style="margin-top:auto">
+<div style="font-size:28px;font-weight:800;margin-bottom:10px">Volume rebates</div>
+<p style="font-size:16px;line-height:1.5;margin:0 0 24px;color:#3a3634">Get rebates on spreads and commissions when you trade high volumes.</p>
+<a href="#" style="font-weight:600;border-top:2px solid #201e1d;padding-top:12px;display:flex;justify-content:space-between">Learn more<span style="color:#ec3013">→</span></a>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<section data-screen-label="Stats" style="border-bottom:2px solid #201e1d;background:#eae9e9">
+<div style="max-width:1320px;margin:0 auto;padding:clamp(56px,7vw,96px) clamp(16px,4vw,40px)">
+<h2 style="font-size:clamp(32px,3.8vw,52px);line-height:1.05;letter-spacing:-0.03em;font-weight:800;margin:0 0 40px;max-width:760px;text-wrap:balance">Join 400,000+ traders who trust IG.</h2>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));border-top:2px solid #201e1d">
+<div style="padding:24px 24px 8px 0;border-right:2px solid #201e1d"><div style="font-size:clamp(40px,4.4vw,60px);font-weight:800;letter-spacing:-0.03em">17,000+</div><div style="font-size:17px;color:#3a3634">markets available</div></div>
+<div style="padding:24px 24px 8px;border-right:2px solid #201e1d"><div style="font-size:clamp(40px,4.4vw,60px);font-weight:800;letter-spacing:-0.03em">25+</div><div style="font-size:17px;color:#3a3634">years' experience</div></div>
+<div style="padding:24px 24px 8px;border-right:2px solid #201e1d"><div style="font-size:clamp(40px,4.4vw,60px);font-weight:800;letter-spacing:-0.03em">LSE</div><div style="font-size:17px;color:#3a3634">listed company</div></div>
+<div style="padding:24px 24px 8px"><div style="font-size:clamp(40px,4.4vw,60px);font-weight:800;letter-spacing:-0.03em">14</div><div style="font-size:17px;color:#3a3634">offices globally</div></div>
+</div>
+</div>
+</section>
+
+<section data-screen-label="Platforms" style="border-bottom:2px solid #201e1d">
+<div style="max-width:1320px;margin:0 auto;padding:clamp(56px,8vw,112px) clamp(16px,4vw,40px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:clamp(40px,6vw,80px);align-items:center">
+<div style="aspect-ratio:4/3;border:2px solid #201e1d;background:repeating-linear-gradient(135deg,#eae9e9 0 10px,#e2e0df 10px 20px);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:13px;color:#5c5856">desktop + mobile platform screenshot</div>
+<div>
+<h2 style="font-size:clamp(36px,4.6vw,64px);line-height:1;letter-spacing:-0.03em;font-weight:800;margin:0 0 32px;text-wrap:balance">Award-winning platforms, built for speed.</h2>
+<div style="display:flex;flex-direction:column;border-top:2px solid #201e1d">
+<sc-for list="{{ features }}" as="f" hint-placeholder-count="4">
+<div style="display:flex;gap:16px;align-items:flex-start;padding:16px 0;border-bottom:1px solid #c9c6c4;font-size:18px;line-height:1.4">
+<span style="width:24px;height:24px;background:#201e1d;color:#f3f2f2;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"></path></svg></span>
+<span>{{ f }}</span>
+</div>
+</sc-for>
+</div>
+<a href="#" style="display:inline-flex;gap:24px;justify-content:space-between;margin-top:32px;border:2px solid #201e1d;padding:14px 20px;font-weight:600;min-width:240px" style-hover="background:#201e1d;color:#f3f2f2">Compare platforms<span>→</span></a>
+</div>
+</div>
+</section>
+
+<section data-screen-label="Audiences" style="border-bottom:2px solid #201e1d">
+<div style="max-width:1320px;margin:0 auto;padding:clamp(56px,8vw,112px) clamp(16px,4vw,40px)">
+<h2 style="font-size:clamp(36px,4.6vw,64px);line-height:1;letter-spacing:-0.03em;font-weight:800;margin:0 0 48px;text-wrap:balance">Everything you need to trade.</h2>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:2px;background:#201e1d;border:2px solid #201e1d">
+<sc-for list="{{ audiences }}" as="a" hint-placeholder-count="2">
+<div style="background:#f3f2f2;display:flex;flex-direction:column">
+<div style="aspect-ratio:16/9;background:repeating-linear-gradient(135deg,#eae9e9 0 10px,#e2e0df 10px 20px);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:13px;color:#5c5856;border-bottom:2px solid #201e1d;filter:grayscale(1)">{{ a.img }}</div>
+<div style="padding:28px">
+<div style="font-size:28px;font-weight:800;margin-bottom:16px">{{ a.title }}</div>
+<sc-for list="{{ a.links }}" as="l" hint-placeholder-count="3">
+<a href="#" style="display:flex;justify-content:space-between;padding:14px 0;border-top:1px solid #c9c6c4;font-size:17px;font-weight:500">{{ l }}<span style="color:#ec3013">↗</span></a>
+</sc-for>
+</div>
+</div>
+</sc-for>
+</div>
+</div>
+</section>
+
+<section data-screen-label="Onboarding" style="border-bottom:2px solid #201e1d;background:#eae9e9">
+<div style="max-width:1320px;margin:0 auto;padding:clamp(56px,8vw,112px) clamp(16px,4vw,40px)">
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:24px 64px;align-items:end;margin-bottom:48px">
+<h2 style="font-size:clamp(36px,4.6vw,64px);line-height:1;letter-spacing:-0.03em;font-weight:800;margin:0">Join IG in 3 steps.</h2>
+<p style="font-size:18px;line-height:1.55;margin:0;color:#3a3634">Most accounts are approved the same day.</p>
+</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:2px;background:#201e1d;border:2px solid #201e1d;margin-bottom:40px">
+<sc-for list="{{ steps }}" as="s" hint-placeholder-count="3">
+<div style="background:#f3f2f2;padding:28px;min-height:240px;display:flex;flex-direction:column">
+<div style="font-size:72px;font-weight:800;letter-spacing:-0.04em;line-height:1;color:#ec3013">{{ s.n }}</div>
+<div style="margin-top:auto">
+<div style="font-size:24px;font-weight:800;margin-bottom:6px">{{ s.t }}</div>
+<div style="font-size:16px;line-height:1.45;color:#3a3634">{{ s.d }}</div>
+</div>
+</div>
+</sc-for>
+</div>
+<a href="#" style="background:#ec3013;color:#fff;font-weight:600;font-size:17px;padding:18px 22px;min-width:260px;display:inline-flex;justify-content:space-between;gap:24px" style-hover="background:#c8240c;color:#fff">Open live account<span>→</span></a>
+</div>
+</section>
+
+<section data-screen-label="Closing banner" style="background:#ec3013;color:#fff;border-bottom:2px solid #201e1d">
+<div style="max-width:1320px;margin:0 auto;padding:clamp(56px,8vw,112px) clamp(16px,4vw,40px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:32px;align-items:end">
+<div style="font-size:clamp(48px,7vw,104px);font-weight:800;letter-spacing:-0.04em;line-height:.92">Markets move. So should you.</div>
+<div style="display:flex;flex-direction:column;gap:12px;max-width:360px">
+<a href="#" style="background:#fff;color:#201e1d;font-weight:600;font-size:17px;padding:18px 22px;display:flex;justify-content:space-between" style-hover="background:#201e1d;color:#fff">Open live account<span>→</span></a>
+<a href="#" style="border:2px solid #fff;color:#fff;font-weight:600;font-size:17px;padding:16px 22px;display:flex;justify-content:space-between" style-hover="background:#fff;color:#ec3013">Try demo account<span>→</span></a>
+</div>
+</div>
+</section>
+
+</main>
+
+<footer data-screen-label="Footer" style="background:#201e1d;color:#f3f2f2">
+<div style="max-width:1320px;margin:0 auto;padding:72px clamp(16px,4vw,40px) 40px">
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,180px),1fr));gap:40px 32px;padding-bottom:48px;border-bottom:2px solid #4a4644">
+<sc-for list="{{ footerCols }}" as="c" hint-placeholder-count="4">
+<div>
+<div style="font-weight:800;font-size:16px;margin-bottom:18px">{{ c.title }}</div>
+<div style="display:flex;flex-direction:column;gap:10px">
+<sc-for list="{{ c.links }}" as="l" hint-placeholder-count="5"><a href="#" style="color:#cfcac7;font-size:15px" style-hover="color:#fff">{{ l }}</a></sc-for>
+</div>
+</div>
+</sc-for>
+<div>
+<div style="font-weight:800;font-size:16px;margin-bottom:18px">Contact us</div>
+<div style="display:flex;flex-direction:column;gap:10px;font-size:15px;color:#cfcac7">
+<a href="#" onClick="{{ openChat }}" style="color:#cfcac7"><span style="color:#fff;font-weight:600">Web chat:</span> start a chat</a>
+<a href="#" style="color:#cfcac7"><span style="color:#fff;font-weight:600">WhatsApp:</span> message our official channel</a>
+<a href="#" style="color:#cfcac7"><span style="color:#fff;font-weight:600">Email:</span> help@ej.example</a>
+</div>
+</div>
+</div>
+<div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:24px;padding:28px 0;border-bottom:2px solid #4a4644">
+<div style="display:flex;flex-wrap:wrap;gap:8px 24px;font-size:14px;font-weight:600">
+<sc-for list="{{ legalLinks }}" as="l" hint-placeholder-count="6"><a href="#" style="color:#f3f2f2">{{ l }}</a></sc-for>
+</div>
+<div style="display:flex;gap:2px">
+<sc-for list="{{ socials }}" as="s" hint-placeholder-count="4"><a href="#" style="color:#f3f2f2;border:2px solid #4a4644;padding:6px 12px;font-size:13px;font-weight:600" style-hover="border-color:#f3f2f2;color:#fff">{{ s }}</a></sc-for>
+</div>
+</div>
+<div style="display:flex;flex-direction:column;gap:16px;padding:32px 0;font-size:14px;line-height:1.6;color:#b5b0ad;max-width:1080px">
+<p style="margin:0">The risk of loss from trading CFDs can be substantial and the value of your investments may fluctuate. 74% of retail client accounts lose money when trading CFDs with this provider. You should consider whether you understand how this product works and whether you can afford to take the high risk of losing your money.</p>
+<p style="margin:0">IG provides an execution-only service. Nothing on this site constitutes investment advice, a recommendation, or an offer or solicitation of any transaction in any financial instrument.</p>
+<p style="margin:0">This site is not directed at residents of the United States or any jurisdiction where its distribution or use would be contrary to local law or regulation. IG Markets is a fictional company created for demonstration purposes.</p>
+</div>
+<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;border-top:2px solid #4a4644;padding-top:24px">
+<div style="display:flex;align-items:center;gap:10px"><span style="width:22px;height:22px;background:#ec3013;display:block"></span><span style="font-family:Arial,Helvetica,sans-serif;color:#fff;font-size:18px;font-weight:600">IG</span><span style="font-size:14px;color:#b5b0ad;margin-left:12px">© 2001–2026</span></div>
+<div style="display:flex;gap:24px;font-size:14px;font-weight:600"><a href="#" style="color:#f3f2f2">Careers</a><a href="#" style="color:#f3f2f2">Investor relations</a></div>
+</div>
+</div>
+</footer>
+
+<sc-if value="{{ chat }}" hint-placeholder-val="{{ false }}">
+<div style="position:fixed;right:24px;bottom:96px;width:min(340px,calc(100vw - 48px));background:#f3f2f2;border:2px solid #201e1d;z-index:60;box-shadow:0 24px 48px -16px rgba(32,30,29,.45)">
+<div style="background:#201e1d;color:#f3f2f2;padding:14px 16px;display:flex;justify-content:space-between;align-items:center;font-weight:800">Chat with IG<button onClick="{{ toggleChat }}" aria-label="Close chat" style="background:none;border:none;color:#f3f2f2;cursor:pointer;display:flex;padding:0"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M18 6 6 18M6 6l12 12"></path></svg></button></div>
+<div style="padding:16px;font-size:15px;line-height:1.5"><div style="background:#eae9e9;padding:12px 14px;margin-bottom:16px">Hi — I'm here to help you open an account or answer platform questions. What can I do for you?</div>
+<div style="display:flex;border:2px solid #201e1d"><input placeholder="Type a message…" style="flex:1;border:none;background:transparent;padding:12px;font:inherit;outline:none;min-width:0"><button style="background:#ec3013;color:#fff;border:none;padding:0 16px;font-weight:600;cursor:pointer">Send</button></div></div>
+</div>
+</sc-if>
+<button onClick="{{ toggleChat }}" aria-label="Open chat" style="position:fixed;right:24px;bottom:24px;width:56px;height:56px;background:#ec3013;color:#fff;border:2px solid #201e1d;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:60" style-hover="background:#c8240c"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg></button>
+
+<sc-if value="{{ hasToast }}" hint-placeholder-val="{{ false }}">
+<div style="position:fixed;left:24px;bottom:24px;background:#201e1d;color:#f3f2f2;padding:14px 18px;font-size:14px;font-weight:600;z-index:70;border-left:6px solid #ec3013;max-width:calc(100vw - 120px)">{{ toast }}</div>
+</sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;liveData&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Behaviour&quot;},&quot;tickerSpeed&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:60,&quot;min&quot;:20,&quot;max&quot;:140,&quot;step&quot;:5,&quot;unit&quot;:&quot;s&quot;,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Behaviour&quot;},&quot;showRiskBanner&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Layout&quot;}}">
+class Component extends DCLogic {
+  inst = [
+    { id: 'eurusd', name: 'EUR/USD', cat: 'Forex', p: 1.08452, d: 5, s: 0.00006, v: 0.00011, m: 100000 },
+    { id: 'gbpusd', name: 'GBP/USD', cat: 'Forex', p: 1.27318, d: 5, s: 0.00009, v: 0.00014, m: 100000 },
+    { id: 'usdjpy', name: 'USD/JPY', cat: 'Forex', p: 149.812, d: 3, s: 0.007, v: 0.018, m: 1000 },
+    { id: 'us500', name: 'US 500', cat: 'Indices', p: 5872.4, d: 1, s: 0.4, v: 1.1, m: 1 },
+    { id: 'uk100', name: 'UK 100', cat: 'Indices', p: 8312.6, d: 1, s: 1.0, v: 1.4, m: 1 },
+    { id: 'de40', name: 'Germany 40', cat: 'Indices', p: 19244.8, d: 1, s: 1.2, v: 3.6, m: 1 },
+    { id: 'gold', name: 'Spot Gold', cat: 'Commodities', p: 2654.31, d: 2, s: 0.3, v: 0.7, m: 1 },
+    { id: 'oil', name: 'US Crude', cat: 'Commodities', p: 68.42, d: 2, s: 0.03, v: 0.05, m: 100 },
+    { id: 'btc', name: 'Bitcoin', cat: 'Crypto', p: 91240, d: 0, s: 36, v: 55, m: 1 },
+    { id: 'eth', name: 'Ether', cat: 'Crypto', p: 3122.5, d: 1, s: 2, v: 3.5, m: 1 },
+    { id: 'nvda', name: 'NVIDIA', cat: 'Shares', p: 141.92, d: 2, s: 0.06, v: 0.14, m: 1 },
+    { id: 'aapl', name: 'Apple', cat: 'Shares', p: 228.15, d: 2, s: 0.05, v: 0.11, m: 1 },
+    { id: 'spy', name: 'S&P 500 ETF', cat: 'ETFs', p: 585.2, d: 2, s: 0.04, v: 0.1, m: 1 }
+  ];
+  menus = [
+    { key: 'trading', label: 'Trading', cols: [
+      { title: 'Markets', links: ['Forex', 'Indices', 'Shares', 'Commodities', 'Cryptocurrencies', 'ETFs'] },
+      { title: 'Ways to trade', links: ['CFD trading', 'Options', 'Turbo certificates', 'Weekend trading'] },
+      { title: 'Costs', links: ['Charges and margins', 'Spreads', 'Overnight funding'] }] },
+    { key: 'platforms', label: 'Platforms', cols: [
+      { title: 'Our platforms', links: ['Web platform', 'Mobile apps', 'API trading', 'Demo account'] },
+      { title: 'Third-party', links: ['TradingView', 'MetaTrader 4', 'MetaTrader 5', 'ProRealTime'] },
+      { title: 'Tools', links: ['Price alerts', 'Risk management', 'Compare features'] }] },
+    { key: 'about', label: 'About us', cols: [
+      { title: 'Company', links: ['Why IG', 'Awards', 'Careers', 'Investor relations'] },
+      { title: 'Trust', links: ['Client fund protection', 'Regulation', 'Security'] },
+      { title: 'Support', links: ['Help centre', 'Contact us', 'Complaints'] }] },
+    { key: 'analysis', label: 'Market analysis', cols: [
+      { title: 'News', links: ['Daily briefings', 'Market movers', 'Trade ideas'] },
+      { title: 'Data', links: ['Economic calendar', 'Client sentiment', 'Earnings calendar'] },
+      { title: 'Video', links: ['Live TV', 'Weekly outlook'] }] },
+    { key: 'learning', label: 'Learning', cols: [
+      { title: 'Academy', links: ['Courses', 'Webinars', 'Trading guides'] },
+      { title: 'Basics', links: ['What is a CFD?', 'Leverage explained', 'Glossary'] },
+      { title: 'Strategy', links: ['Trading strategies', 'Technical analysis'] }] }
+  ];
+  wlSets = [
+    { label: 'Popular', ids: ['us500', 'uk100', 'de40', 'eurusd', 'gold', 'btc'] },
+    { label: 'Forex', ids: ['eurusd', 'gbpusd', 'usdjpy'] },
+    { label: 'Shares', ids: ['nvda', 'aapl', 'spy'] }
+  ];
+  state = { q: this.initQ(), w: typeof window !== 'undefined' ? window.innerWidth : 1400, menu: null, mob: false, mobOpen: {}, tradeId: 'us500', size: 1, positions: [], toast: null, chat: false, wl: 0, paused: false, lang: 'EN', langOpen: false };
+  langList = [['English','EN'],['Español','ES'],['Français','FR'],['Deutsch','DE'],['中文','ZH'],['العربية','AR']];
+
+  initQ() {
+    const q = {};
+    this.inst.forEach(i => {
+      const h = []; let v = i.p;
+      for (let k = 0; k < 40; k++) { v += (i.p - v) * 0.03 + (Math.random() - 0.5) * i.v * 2.4; h.push(v); }
+      q[i.id] = { mid: v, open: i.p, hist: h };
+    });
+    return q;
+  }
+  componentDidMount() {
+    this.onResize = () => this.setState({ w: window.innerWidth });
+    window.addEventListener('resize', this.onResize);
+    this.timer = setInterval(() => this.tick(), 1100);
+  }
+  componentWillUnmount() { window.removeEventListener('resize', this.onResize); clearInterval(this.timer); clearTimeout(this.tt); }
+  tick() {
+    if (this.props.liveData === false) return;
+    this.setState(s => {
+      const q = {};
+      this.inst.forEach(i => {
+        const o = s.q[i.id];
+        const mid = o.mid + (i.p - o.mid) * 0.02 + (Math.random() - 0.5) * i.v * 2;
+        const hist = o.hist.slice(1); hist.push(mid);
+        q[i.id] = { mid, open: o.open, hist };
+      });
+      return { q };
+    });
+  }
+  fmt(n, d) { return n.toLocaleString('en-US', { minimumFractionDigits: d, maximumFractionDigits: d }); }
+  quote(id) {
+    const i = this.inst.find(x => x.id === id), o = this.state.q[id];
+    const chg = o.mid - o.open, pct = chg / o.open * 100, up = chg >= 0;
+    const mn = Math.min(...o.hist), mx = Math.max(...o.hist), r = mx - mn || 1;
+    const spark = o.hist.map((v, k) => (k / (o.hist.length - 1) * 100).toFixed(1) + ',' + (28 - (v - mn) / r * 26).toFixed(1)).join(' ');
+    return {
+      id, name: i.name, cat: i.cat, spark,
+      price: this.fmt(o.mid, i.d), bid: this.fmt(o.mid - i.s / 2, i.d), offer: this.fmt(o.mid + i.s / 2, i.d),
+      chg: (up ? '+' : '−') + this.fmt(Math.abs(chg), i.d), pct: (up ? '+' : '−') + Math.abs(pct).toFixed(2) + '%',
+      arrow: up ? '▲' : '▼', chgColor: up ? '#1f7a4a' : '#d42a10', spread: this.fmt(i.s, i.d)
+    };
+  }
+  setToast(t) { clearTimeout(this.tt); this.setState({ toast: t }); this.tt = setTimeout(() => this.setState({ toast: null }), 2600); }
+  place(side) {
+    const i = this.inst.find(x => x.id === this.state.tradeId), o = this.state.q[i.id];
+    const entry = side === 'BUY' ? o.mid + i.s / 2 : o.mid - i.s / 2;
+    const pos = { key: Date.now() + Math.random(), id: i.id, side, size: this.state.size, entry };
+    this.setState(s => ({ positions: [pos, ...s.positions].slice(0, 8) }));
+    this.setToast((side === 'BUY' ? 'Bought ' : 'Sold ') + this.state.size + ' × ' + i.name + ' @ ' + this.fmt(entry, i.d));
+  }
+  renderVals() {
+    const s = this.state, isMobile = s.w < 1000;
+    const set = (o) => this.setState(o);
+    const active = this.menus.find(m => m.key === s.menu);
+    const tq = this.quote(s.tradeId), ti = this.inst.find(x => x.id === s.tradeId);
+    let total = 0;
+    const positions = s.positions.map(p => {
+      const i = this.inst.find(x => x.id === p.id), o = s.q[p.id];
+      const exit = p.side === 'BUY' ? o.mid - i.s / 2 : o.mid + i.s / 2;
+      const pnl = (exit - p.entry) * (p.side === 'BUY' ? 1 : -1) * p.size * i.m;
+      total += pnl;
+      return { name: i.name, side: p.side, size: p.size, entry: this.fmt(p.entry, i.d), sideColor: p.side === 'BUY' ? '#201e1d' : '#d42a10',
+        pnl: (pnl >= 0 ? '+$' : '−$') + this.fmt(Math.abs(pnl), 2), pnlColor: pnl >= 0 ? '#1f7a4a' : '#d42a10',
+        close: () => { this.setState(st => ({ positions: st.positions.filter(x => x.key !== p.key) })); this.setToast('Closed ' + i.name + ' · ' + (pnl >= 0 ? '+$' : '−$') + this.fmt(Math.abs(pnl), 2)); } };
+    });
+    const tick = this.inst.map(i => this.quote(i.id));
+    const live = this.props.liveData !== false;
+    return {
+      showRisk: this.props.showRiskBanner !== false,
+      isMobile, isDesk: !isMobile, mob: s.mob, notMob: !s.mob, mobOpenPanel: isMobile && s.mob,
+      toggleMob: () => set({ mob: !s.mob }),
+      menus: this.menus.map(m => ({ label: m.label, enter: () => set({ menu: m.key, langOpen: false }), underline: s.menu === m.key ? '2px solid #ec3013' : '2px solid transparent' })),
+      menuOpen: !isMobile && !!active, activeCols: active ? active.cols : [], closeMenu: () => set({ menu: null }),
+      mobMenus: this.menus.map(m => ({ label: m.label, open: !!s.mobOpen[m.key], sign: s.mobOpen[m.key] ? '−' : '+',
+        links: m.cols.flatMap(c => c.links), toggle: () => set({ mobOpen: { ...s.mobOpen, [m.key]: !s.mobOpen[m.key] } }) })),
+      liveDot: live ? '#1f7a4a' : '#8a8583', liveLabel: live ? 'LIVE' : 'PAUSED',
+      tradeChips: ['us500', 'eurusd', 'gold', 'btc'].map(id => { const on = id === s.tradeId; return { name: this.inst.find(x => x.id === id).name, bg: on ? '#201e1d' : 'transparent', fg: on ? '#f3f2f2' : '#201e1d', pick: () => set({ tradeId: id }) }; }),
+      tq, size: s.size,
+      inc: () => set({ size: Math.min(100, s.size + 1) }), dec: () => set({ size: Math.max(1, s.size - 1) }),
+      margin: '$' + this.fmt(s.q[s.tradeId].mid * s.size * ti.m * 0.05, 2),
+      buy: () => this.place('BUY'), sell: () => this.place('SELL'),
+      positions, noPositions: positions.length === 0,
+      totalPnl: positions.length ? (total >= 0 ? '+$' : '−$') + this.fmt(Math.abs(total), 2) : '', totalColor: total >= 0 ? '#1f7a4a' : '#d42a10',
+      tickerItems: tick.concat(tick), tickerDur: (this.props.tickerSpeed ?? 60) + 's', tickerState: s.paused ? 'paused' : 'running',
+      pauseTicker: () => set({ paused: true }), resumeTicker: () => set({ paused: false }),
+      wlTabs: this.wlSets.map((w, k) => ({ label: w.label, bg: k === s.wl ? '#201e1d' : 'transparent', fg: k === s.wl ? '#f3f2f2' : '#201e1d', pick: () => set({ wl: k }) })),
+      wlRows: this.wlSets[s.wl].ids.map(id => this.quote(id)),
+      marketCards: [
+        { n: '01', title: 'Forex', desc: 'Go long or short on 80+ currency pairs like EUR/USD and USD/JPY, 24 hours a day.', q: this.quote('eurusd') },
+        { n: '02', title: 'Indices', desc: 'Trade 80+ global indices including the US 500 and UK 100.', q: this.quote('us500') },
+        { n: '03', title: 'Shares', desc: 'Extended trading hours on 13,000+ shares from global exchanges.', q: this.quote('nvda') },
+        { n: '04', title: 'Commodities', desc: 'Metals, energies and softs — from spot gold to US crude.', q: this.quote('gold') },
+        { n: '05', title: 'Crypto', desc: 'Speculate on Bitcoin, Ether and 10+ more coins without a wallet.', q: this.quote('btc') },
+        { n: '06', title: 'ETFs', desc: 'Get diversified exposure with 2,000+ exchange-traded funds.', q: this.quote('spy') }
+      ],
+      bars: [{ l: '1W', h: '12%', c: '#c9c6c4' }, { l: '1M', h: '30%', c: '#201e1d' }, { l: '6M', h: '22%', c: '#c9c6c4' }, { l: '1Y', h: '44%', c: '#201e1d' }, { l: '2Y', h: '64%', c: '#c9c6c4' }, { l: '3Y', h: '96%', c: '#ec3013' }],
+      features: ['Fast, intuitive web platform and mobile apps', 'Connect to MetaTrader 4 and MetaTrader 5', 'Advanced charting with TradingView and ProRealTime', 'Price alerts, guaranteed stops and risk-management tools'],
+      audiences: [
+        { title: 'For experienced traders', img: 'photo · trader at desk', links: ['Choose your platform', 'See costs and spreads', 'Explore weekend trading'] },
+        { title: 'For new traders', img: 'photo · trader on mobile', links: ['Learn to trade', 'Discover new opportunities', 'Understand risk management'] }
+      ],
+      steps: [
+        { n: '01', t: 'Answer a few questions', d: 'Tell us a bit about you and your trading experience.' },
+        { n: '02', t: 'Verify your identity', d: 'Usually done instantly with a photo ID.' },
+        { n: '03', t: 'Fund and trade', d: 'Deposit by card, bank transfer or Wise.' }
+      ],
+      footerCols: [
+        { title: 'Markets', links: ['Share CFDs', 'Forex', 'Indices', 'Commodities', 'Crypto'] },
+        { title: 'Platforms', links: ['Web platform', 'Trading apps', 'TradingView', 'MetaTrader 4', 'MetaTrader 5', 'Demo'] },
+        { title: 'Learn', links: ['News and ideas', 'Trading strategy', 'Academy', 'Webinars'] },
+        { title: 'About', links: ['Charges and margins', 'Premium services', 'Refer a friend', 'Partnerships', 'Corporate accounts'] }
+      ],
+      legalLinks: ['Terms', 'Privacy', 'How to fund', 'Vulnerability', 'Cookies', 'Risk disclosure'],
+      socials: ['Facebook', 'X', 'YouTube', 'LinkedIn'],
+      chat: s.chat, toggleChat: () => set({ chat: !s.chat }), openChat: (e) => { e && e.preventDefault(); set({ chat: true }); },
+      hasToast: !!s.toast, toast: s.toast,
+      langCode: s.lang, langOpen: s.langOpen, toggleLang: () => set({ langOpen: !s.langOpen, menu: null }),
+      langs: this.langList.map(([name, code]) => ({ name, code, bg: code === s.lang ? '#201e1d' : 'transparent', fg: code === s.lang ? '#f3f2f2' : '#201e1d', pick: () => set({ lang: code, langOpen: false }) }))
+    };
+  }
+}
+</script>
+</body>
+</html>

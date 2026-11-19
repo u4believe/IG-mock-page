@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="./image-slot.js"></script>
+<style>
+body{margin:0;background:#fff;color:#222;font-family:'Figtree',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+*{box-sizing:border-box}
+a{color:#2f6fbf;text-decoration:none}
+a:hover{color:#1d4f8f}
+button,input,select{font-family:inherit}
+input::placeholder{color:#9a9a9a}
+</style>
+</helmet>
+
+<div style="min-height:100vh;font-family:'Figtree',system-ui,sans-serif">
+
+<sc-if value="{{ inForm }}" hint-placeholder-val="{{ true }}">
+<div data-screen-label="Application" style="min-height:100vh;display:flex;flex-direction:column">
+<div style="position:sticky;top:0;z-index:40;background:#222;color:#fff;font-size:16px;line-height:1.15;text-align:center;padding:6px clamp(12px,2vw,24px);text-wrap:pretty">80% of retail client accounts lose money when trading CFDs with this investment trading platform. CFDs are complex financial instruments with a high risk of losing money quickly due to leverage. Please fully understand how CFD products work before trading and assess whether you can afford to take the high risk of losing your deposit.</div>
+<div style="flex:1;display:grid;grid-template-columns:{{ cols }}">
+
+<aside style="position:{{ sidePos }};top:{{ bannerH }};height:{{ sideH }};align-self:start;overflow:auto;background:#f4f5f7;border-right:1px solid #e6e7ea;padding:{{ sidePad }};display:flex;flex-direction:column;justify-content:space-between;gap:24px">
+<div>
+<a href="IG%20Landing%20v2.dc.html" aria-label="IG home" style="font-family:Arial,Helvetica,sans-serif;display:inline-block;color:#d81e05;font-weight:600;font-size:48px;letter-spacing:-0.07em;line-height:1;margin-bottom:{{ logoGap }}">IG</a>
+<sc-if value="{{ isDesk }}" hint-placeholder-val="{{ true }}">
+<div style="display:flex;flex-direction:column">
+<sc-for list="{{ stepper }}" as="st" hint-placeholder-count="6">
+<div style="position:relative;height:67px;display:flex;align-items:flex-start;gap:12px">
+<sc-if value="{{ st.hasLine }}" hint-placeholder-val="{{ true }}"><div style="position:absolute;left:6px;top:13px;width:2px;height:67px;background:{{ st.line }}"></div></sc-if>
+<span style="position:relative;margin-top:4px;width:14px;height:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0"><span style="width:{{ st.dot }};height:{{ st.dot }};border-radius:50%;background:{{ st.fill }};border:{{ st.ring }}"></span></span>
+<span style="font-size:17px;font-weight:{{ st.weight }};color:{{ st.color }}">{{ st.label }}</span>
+</div>
+</sc-for>
+</div>
+</sc-if>
+<sc-if value="{{ isMobile }}" hint-placeholder-val="{{ false }}">
+<div style="font-size:15px;color:#555">Step {{ stepNo }} of 6 · <strong style="color:#222">{{ stepName }}</strong></div>
+<div style="height:3px;background:#dcdde0;margin-top:10px;border-radius:2px"><div style="height:3px;background:#2e9e4f;border-radius:2px;width:{{ progress }}"></div></div>
+</sc-if>
+</div>
+<sc-if value="{{ isDesk }}" hint-placeholder-val="{{ true }}">
+<div style="font-size:17px;line-height:1.1">Call us on<br><a href="#" style="color:#2f6fbf">+61 (3) 9860 1799</a></div>
+</sc-if>
+</aside>
+
+<main style="padding:{{ mainPad }}">
+<div style="max-width:500px">
+
+<sc-if value="{{ s0 }}" hint-placeholder-val="{{ true }}">
+<div data-screen-label="01 Profile" style="display:flex;flex-direction:column">
+<h1 style="font-size:28px;font-weight:500;margin:0 0 40px;color:#222">Your personal details</h1>
+<p style="font-size:13px;line-height:1.55;color:#777;margin:0 0 50px">Important documents to read before you apply: <a href="#">Risk Disclosure Notice</a>, <a href="#">Customer Agreement</a> and <a href="#">Complaints Policy</a></p>
+<label style="font-size:17px;margin-bottom:8px">Country of residence</label>
+<select value="{{ f.country }}" onChange="{{ on.country }}" style="height:48px;border:1px solid #c8c8c8;border-radius:2px;padding:0 36px 0 10px;font-size:17px;color:#222;background:#fff url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none' stroke='%23888' stroke-width='1.4'%3E%3Cpath d='M1 1l5 5 5-5'/%3E%3C/svg%3E&quot;) no-repeat right 10px center;appearance:none;margin-bottom:34px"><sc-for list="{{ countries }}" as="c" hint-placeholder-count="6"><option value="{{ c }}">{{ c }}</option></sc-for></select>
+<label style="font-size:17px;margin-bottom:8px">Title</label>
+<select value="{{ f.title }}" onChange="{{ on.title }}" style="height:48px;border:1px solid #c8c8c8;border-radius:2px;padding:0 36px 0 10px;font-size:17px;color:#222;background:#fff url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none' stroke='%23888' stroke-width='1.4'%3E%3Cpath d='M1 1l5 5 5-5'/%3E%3C/svg%3E&quot;) no-repeat right 10px center;appearance:none;margin-bottom:34px"><sc-for list="{{ titles }}" as="c" hint-placeholder-count="5"><option value="{{ c }}">{{ c }}</option></sc-for></select>
+<label style="font-size:17px">First name</label>
+<span style="font-size:15px;color:#666;margin:4px 0 10px">As shown on your National IC in English</span>
+<input value="{{ f.first }}" onChange="{{ on.first }}" style="height:48px;border:1px solid #c8c8c8;border-radius:2px;padding:0 10px;font-size:17px;margin-bottom:34px;outline-color:#2f6fbf">
+<label style="font-size:17px">Last name</label>
+<span style="font-size:15px;color:#666;margin:4px 0 10px">As shown on your National IC in English</span>
+<input value="{{ f.last }}" onChange="{{ on.last }}" style="height:48px;border:1px solid #c8c8c8;border-radius:2px;padding:0 10px;font-size:17px;margin-bottom:34px;outline-color:#2f6fbf">
+<label style="font-size:17px;margin-bottom:8px">Former first name (if applicable)</label>
+<input value="{{ f.ffirst }}" onChange="{{ on.ffirst }}" style="height:48px;border:1px solid #c8c8c8;border-radius:2px;padding:0 10px;font-size:17px;margin-bottom:34px;outline-color:#2f6fbf">
+<label style="font-size:17px;margin-bottom:8px">Former last name (if applicable)</label>
+<input value="{{ f.flast }}" onChange="{{ on.flast }}" style="height:48px;border:1px solid #c8c8c8;border-radius:2px;padding:0 10px;font-size:17px;margin-bottom:34px;outline-color:#2f6fbf">
+<label style="font-size:17px;margin-bottom:8px">Email address</label>
+<input type="email" value="{{ f.email }}" onChange="{{ on.email }}" style="height:48px;border:1px solid #c8c8c8;border-radius:2px;padding:0 10px;font-size:17px;margin-bottom:34px;outline-color:#2f6fbf">
+<label style="font-size:17px;margin-bottom:8px">Password</label>
+<div style="position:relative;margin-bottom:22px">
+<input type="{{ pwType }}" value="{{ f.pw }}" onChange="{{ on.pw }}" style="width:100%;height:48px;border:1px solid #c8c8c8;border-radius:2px;padding:0 48px 0 10px;font-size:17px;outline-color:#2f6fbf">
+<button onClick="{{ togglePw }}" aria-label="Show password" style="position:absolute;right:10px;top:12px;background:none;border:none;padding:0;cursor:pointer;color:#8a8a8a;display:flex"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12z"></path><circle cx="12" cy="12" r="3" fill="currentColor"></circle></svg></button>
+</div>
+<div style="display:flex;flex-direction:column;gap:3px;margin-bottom:56px">
+<sc-for list="{{ pwRules }}" as="r" hint-placeholder-count="4"><div style="display:flex;align-items:center;gap:6px;font-size:15px;color:{{ r.text }}"><svg width="13" height="13" viewBox="0 0 16 16"><circle cx="8" cy="8" r="8" fill="{{ r.dot }}"></circle><path d="m4.5 8.2 2.3 2.3 4.7-4.7" fill="none" stroke="#fff" stroke-width="1.8"></path></svg>{{ r.label }}</div></sc-for>
+</div>
+<p style="font-size:13px;line-height:1.55;color:#777;margin:0 0 6px">For more info on how we might use your data, see our <a href="#">privacy notice</a> and <a href="#">privacy page</a>.</p>
+<p style="font-size:13px;line-height:1.55;color:#777;margin:0">By clicking 'next' you agree to the <a href="#">access policy</a>.</p>
+</div>
+</sc-if>
+
+<sc-if value="{{ s1 }}" hint-placeholder-val="{{ false }}">
+<div data-screen-label="02 Contact method" style="display:flex;flex-direction:column;padding-top:{{ midTop }}">
+<h1 style="font-size:28px;font-weight:500;margin:0 0 18px;color:#222">Contact Method</h1>
+<p style="font-size:17px;line-height:1.55;color:#555;margin:0 0 24px">To avoid delays, please enter your contact information correctly.</p>
+<label style="font-size:17px;margin-bottom:8px">Phone number</label>
+<div style="display:flex;gap:10px">
+<select value="{{ f.code }}" onChange="{{ on.code }}" style="width:92px;height:48px;border:1px solid #c8c8c8;border-radius:2px;padding:0 24px 0 10px;font-size:17px;color:#222;background:#fff url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none' stroke='%23888' stroke-width='1.4'%3E%3Cpath d='M1 1l5 5 5-5'/%3E%3C/svg%3E&quot;) no-repeat right 8px center;appearance:none"><sc-for list="{{ codes }}" as="c" hint-placeholder-count="6"><option value="{{ c }}">{{ c }}</option></sc-for></select>
+<input type="tel" value="{{ f.phone }}" onChange="{{ on.phone }}" style="flex:1;min-width:0;height:48px;border:1px solid #c8c8c8;border-radius:2px;padding:0 10px;font-size:17px;outline-color:#2f6fbf">
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ s2 }}" hint-placeholder-val="{{ false }}">
+<div data-screen-label="03 Home address" style="display:flex;flex-direction:column">
+<h1 style="font-size:28px;font-weight:500;margin:0 0 18px;color:#222">What's your home address?</h1>
+<p style="font-size:17px;line-height:1.55;color:#555;margin:0 0 24px">To avoid delays, please enter your complete address</p>
+<label style="font-size:17px;margin-bottom:8px">House Number / Lot Number / Floor and Building Name</label>
+<input value="{{ f.house }}" onChange="{{ on.house }}" style="height:48px;border:1px solid #c8c8c8;border-radius:2px;padding:0 10px;font-size:17px;margin-bottom:34px;outline-color:#2f6fbf">
+<label style="font-size:17px;margin-bottom:8px">Street Name or District</label>
+<input value="{{ f.street }}" onChange="{{ on.street }}" style="height:48px;border:1px solid #c8c8c8;border-radius:2px;padding:0 10px;font-size:17px;margin-bottom:34px;outline-color:#2f6fbf">
+<label style="font-size:17px;margin-bottom:8px">City</label>
+<input value="{{ f.city }}" onChange="{{ on.city }}" style="height:48px;border:1px solid #c8c8c8;border-radius:2px;padding:0 10px;font-size:17px;margin-bottom:34px;outline-color:#2f6fbf">
+<label style="font-size:17px;margin-bottom:8px">Postal Code</label>
+<input value="{{ f.postal }}" onChange="{{ on.postal }}" style="height:48px;border:1px solid #c8c8c8;border-radius:2px;padding:0 10px;font-size:17px;margin-bottom:30px;outline-color:#2f6fbf">
+<div style="background:#efefef;border-radius:3px;padding:10px 8px;font-size:17px;line-height:1.55;color:#555">You'll need to provide documents later to verify your residential address</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ s3 }}" hint-placeholder-val="{{ false }}">
+<div data-screen-label="04 Identification" style="display:flex;flex-direction:column;padding-top:{{ midTop }}">
+<h1 style="font-size:28px;font-weight:500;margin:0 0 18px;color:#222">Identification</h1>
+<p style="font-size:17px;line-height:1.55;color:#555;margin:0 0 24px">We need this information to identify you</p>
+<label style="font-size:17px;margin-bottom:8px">Date of birth</label>
+<input placeholder="DD/MM/YYYY" inputmode="numeric" value="{{ f.dob }}" onChange="{{ on.dob }}" style="height:48px;border:1px solid #c8c8c8;border-radius:2px;padding:0 10px;font-size:17px;margin-bottom:34px;outline-color:#2f6fbf">
+<label style="font-size:17px;margin-bottom:8px">Place of Birth</label>
+<select value="{{ f.pob }}" onChange="{{ on.pob }}" style="height:48px;border:1px solid #c8c8c8;border-radius:2px;padding:0 36px 0 10px;font-size:17px;color:#222;background:#fff url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1h10L6 7z' fill='%23555'/%3E%3C/svg%3E&quot;) no-repeat right 10px center;appearance:none;margin-bottom:34px"><sc-for list="{{ countries }}" as="c" hint-placeholder-count="6"><option value="{{ c }}">{{ c }}</option></sc-for></select>
+<p style="font-size:13px;line-height:1.55;color:#777;margin:0">All personal information will only be used in accordance with applicable <a href="#">privacy laws</a> and <a href="#">IG's Privacy Notice</a>.</p>
+</div>
+</sc-if>
+
+<sc-if value="{{ s4 }}" hint-placeholder-val="{{ false }}">
+<div data-screen-label="05 Nationality" style="display:flex;flex-direction:column;padding-top:{{ midTop }}">
+<h1 style="font-size:28px;font-weight:500;margin:0 0 18px;color:#222">Identification</h1>
+<p style="font-size:17px;line-height:1.55;color:#555;margin:0 0 24px">We need this information to identify you</p>
+<label style="font-size:17px;margin-bottom:8px">Country of nationality</label>
+<select value="{{ f.nat }}" onChange="{{ on.nat }}" style="height:48px;border:1px solid #c8c8c8;border-radius:2px;padding:0 36px 0 10px;font-size:17px;color:#222;background:#fff url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none' stroke='%23888' stroke-width='1.4'%3E%3Cpath d='M1 1l5 5 5-5'/%3E%3C/svg%3E&quot;) no-repeat right 10px center;appearance:none;margin-bottom:24px"><sc-for list="{{ countries }}" as="c" hint-placeholder-count="6"><option value="{{ c }}">{{ c }}</option></sc-for></select>
+<sc-if value="{{ nat2 }}" hint-placeholder-val="{{ false }}">
+<label style="font-size:17px;margin-bottom:8px">Second nationality</label>
+<select value="{{ f.nat2 }}" onChange="{{ on.nat2 }}" style="height:48px;border:1px solid #c8c8c8;border-radius:2px;padding:0 36px 0 10px;font-size:17px;color:#222;background:#fff url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none' stroke='%23888' stroke-width='1.4'%3E%3Cpath d='M1 1l5 5 5-5'/%3E%3C/svg%3E&quot;) no-repeat right 10px center;appearance:none;margin-bottom:24px"><sc-for list="{{ countries }}" as="c" hint-placeholder-count="6"><option value="{{ c }}">{{ c }}</option></sc-for></select>
+</sc-if>
+<button onClick="{{ addNat }}" style="align-self:flex-start;background:none;border:none;padding:0;color:#2f6fbf;font-size:17px;font-weight:600;cursor:pointer">{{ natLabel }}</button>
+</div>
+</sc-if>
+
+<sc-if value="{{ s5 }}" hint-placeholder-val="{{ false }}">
+<div data-screen-label="06 Employment" style="display:flex;flex-direction:column;padding-top:{{ midTop }}">
+<h1 style="font-size:28px;font-weight:500;margin:0 0 32px;color:#222">Employment</h1>
+<div style="font-size:17px;margin-bottom:10px">What’s your employment status?</div>
+<div style="display:flex;flex-direction:column;gap:8px">
+<sc-for list="{{ empOpts }}" as="o" hint-placeholder-count="4"><button onClick="{{ o.pick }}" style="display:flex;align-items:center;gap:12px;height:47px;padding:0 10px;background:#fff;border:1px solid {{ o.border }};border-radius:2px;font-size:17px;color:#222;cursor:pointer;text-align:left"><span style="width:24px;height:24px;border-radius:50%;border:1px solid #c8c8c8;display:flex;align-items:center;justify-content:center"><span style="width:12px;height:12px;border-radius:50%;background:{{ o.dot }}"></span></span>{{ o.label }}</button></sc-for>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ s6 }}" hint-placeholder-val="{{ false }}">
+<div data-screen-label="07 Funding" style="display:flex;flex-direction:column">
+<h1 style="font-size:28px;font-weight:500;margin:0 0 18px;color:#222">How might you fund your trading?</h1>
+<p style="font-size:17px;line-height:1.55;color:#555;margin:0 0 24px">We need to understand where your funds will come from.</p>
+<div style="font-size:17px;margin-bottom:10px">Select all that apply</div>
+<div style="display:flex;flex-direction:column;gap:12px;padding:0 8px;margin-bottom:44px">
+<sc-for list="{{ fundOpts }}" as="o" hint-placeholder-count="4"><button onClick="{{ o.pick }}" style="display:flex;align-items:center;gap:12px;height:62px;padding:0 10px;background:#fff;border:1px solid {{ o.border }};border-radius:2px;font-size:17px;color:#222;cursor:pointer;text-align:left"><span style="width:22px;height:22px;border:1px solid #c8c8c8;border-radius:2px;background:{{ o.box }};display:flex;align-items:center;justify-content:center"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="#fff" stroke-width="2.4"><path d="m3 8.5 3.2 3.2L13 5"></path></svg></span>{{ o.label }}</button></sc-for>
+</div>
+<div style="font-size:17px;margin-bottom:10px">What’s your purpose of investment?</div>
+<div style="display:flex;flex-direction:column;gap:12px;padding:0 8px">
+<sc-for list="{{ purpOpts }}" as="o" hint-placeholder-count="4"><button onClick="{{ o.pick }}" style="display:flex;align-items:center;gap:12px;height:62px;padding:0 10px;background:#fff;border:1px solid {{ o.border }};border-radius:2px;font-size:17px;color:#222;cursor:pointer;text-align:left"><span style="width:22px;height:22px;border:1px solid #c8c8c8;border-radius:2px;background:{{ o.box }};display:flex;align-items:center;justify-content:center"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="#fff" stroke-width="2.4"><path d="m3 8.5 3.2 3.2L13 5"></path></svg></span>{{ o.label }}</button></sc-for>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ s7 }}" hint-placeholder-val="{{ false }}">
+<div data-screen-label="08 Experience" style="display:flex;flex-direction:column">
+<h1 style="font-size:28px;font-weight:500;line-height:1.3;margin:0 0 30px;color:#222">How many times have you invested or traded in the last 3 years?</h1>
+<sc-for list="{{ freqRows }}" as="row" hint-placeholder-count="3">
+<div style="padding:0 8px;margin-bottom:26px">
+<div style="font-size:17px;margin-bottom:10px">{{ row.label }}</div>
+<div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr))">
+<sc-for list="{{ row.opts }}" as="o" hint-placeholder-count="3"><button onClick="{{ o.pick }}" style="height:72px;background:{{ o.bg }};color:{{ o.fg }};border:1px solid {{ o.border }};margin-left:-1px;font-size:16px;font-weight:500;cursor:pointer">{{ o.label }}</button></sc-for>
+</div>
+</div>
+</sc-for>
+<div style="font-size:17px;margin:18px 0 10px">How have you mostly traded these products?</div>
+<div style="display:flex;flex-direction:column;gap:8px;margin-bottom:50px">
+<sc-for list="{{ howOpts }}" as="o" hint-placeholder-count="2"><button onClick="{{ o.pick }}" style="display:flex;align-items:center;gap:12px;height:47px;padding:0 10px;background:#fff;border:1px solid {{ o.border }};border-radius:2px;font-size:17px;color:#222;cursor:pointer;text-align:left"><span style="width:24px;height:24px;border-radius:50%;border:1px solid #c8c8c8;display:flex;align-items:center;justify-content:center"><span style="width:12px;height:12px;border-radius:50%;background:{{ o.dot }}"></span></span>{{ o.label }}</button></sc-for>
+</div>
+<div style="font-size:17px;line-height:1.3">Do you have any experience or qualifications relevant to the understanding of our products?</div>
+<div style="font-size:15px;color:#666;margin:4px 0 10px">This could be through your work, training or education</div>
+<div style="display:flex;flex-direction:column;gap:8px">
+<sc-for list="{{ qualOpts }}" as="o" hint-placeholder-count="4"><button onClick="{{ o.pick }}" style="display:flex;align-items:center;gap:12px;min-height:47px;padding:8px 10px;background:#fff;border:1px solid {{ o.border }};border-radius:2px;font-size:17px;color:#222;cursor:pointer;text-align:left"><span style="width:24px;height:24px;flex-shrink:0;border-radius:50%;border:1px solid #c8c8c8;display:flex;align-items:center;justify-content:center"><span style="width:12px;height:12px;border-radius:50%;background:{{ o.dot }}"></span></span>{{ o.label }}</button></sc-for>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ s8 }}" hint-placeholder-val="{{ false }}">
+<div data-screen-label="09 Terms" style="display:flex;flex-direction:column;font-size:15px;line-height:1.6;color:#333">
+<h1 style="font-size:28px;font-weight:500;margin:0 0 4px;color:#222">Terms and conditions</h1>
+<p style="margin:0 0 16px">You are applying for a CFD account.</p>
+<p style="margin:0 0 16px">IG International Limited is licensed to conduct investment business and digital asset business by the Bermuda Monetary Authority.</p>
+<p style="margin:0 0 16px">The risks of loss from investing in CFDs can be substantial and the value of your investments may fluctuate. CFDs are complex instruments and come with a high risk of losing money rapidly due to leverage. You should consider whether you understand how this product works, and whether you can afford to take the high risk of losing your money.</p>
+<p style="margin:0 0 16px">I hereby declare and acknowledge that the risk of loss in investing in commodity or financial futures, foreign exchange contracts, investments and index contracts and options thereon and any other investment transaction(s) which I may request you to enter into on my behalf can be substantial and that this fact has been duly brought to my attention. I understand the nature of such investment and I have carefully considered whether such investments are suitable for me in light of my circumstances and financial resources. I confirm to you that I am able, financially and otherwise, to assume the risks of such trading. I recognise that guarantees of profit or freedom from loss are impossible and inappropriate in such trading and I acknowledge that I have received no such guarantee from you or from any of your officers or employees and have not entered into this agreement in consideration of or reliance upon any such guarantees or similar representations.</p>
+<p style="margin:0 0 16px">I have read, understood and agree to be bound by the <a href="#">Customer Agreement</a>, which I agree is provided to me on the IG website. I confirm that I am a <a href="#">non-professional user</a>* for market data purposes or if I am a professional user I confirm that I will immediately contact <a href="#">helpdesk.en@ej.com</a>. I consent to receive emails from IG Group companies about trading ideas, products and services. You may elect not to receive marketing communications from IG Group companies at any time by visiting our marketing preference centre. I certify that the information given by me in this form is true and correct.</p>
+<p style="margin:0 0 32px">As part of our onboarding process, we use Onfido to process certain identity checks. In relation to this, I have read, understand and agree to accept the <a href="#">Onfido Facial Scan Policy and Release</a>, <a href="#">the Onfido Privacy Policy</a> and <a href="#">the Onfido Terms of Service</a>.</p>
+<button onClick="{{ toggleAgree }}" style="display:flex;align-items:center;gap:12px;height:46px;padding:0 10px;background:#fff;border:1px solid {{ agreeBorder }};border-radius:2px;font-size:15px;color:#222;cursor:pointer;text-align:left;margin-bottom:20px"><span style="width:20px;height:20px;border:1px solid #c8c8c8;border-radius:2px;background:{{ agreeBox }};display:flex;align-items:center;justify-content:center"><svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="#fff" stroke-width="2.4"><path d="m3 8.5 3.2 3.2L13 5"></path></svg></span>I agree to all of the above</button>
+<p style="margin:0">*A non-professional user for market data purposes means that you are an individual and not any sort of entity, company or otherwise and you meet all of the conditions set out in the <a href="#">Non-Professional User declaration</a>.</p>
+</div>
+</sc-if>
+
+<div style="display:flex;align-items:center;gap:40px;margin-top:{{ btnTop }};padding-bottom:60px">
+<sc-if value="{{ hasBack }}" hint-placeholder-val="{{ false }}">
+<button onClick="{{ back }}" style="background:none;border:none;padding:0;display:flex;align-items:center;gap:10px;color:#2f6fbf;font-size:17px;font-weight:600;cursor:pointer"><svg width="10" height="16" viewBox="0 0 10 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 1 2 8l6 7"></path></svg>Back</button>
+</sc-if>
+<button onClick="{{ next }}" disabled="{{ nextDisabled }}" style="width:130px;height:44px;border-radius:2px;border:1px solid {{ nextBorder }};background:{{ nextBg }};color:{{ nextFg }};font-size:17px;font-weight:{{ nextWeight }};cursor:{{ nextCursor }}">Next</button>
+</div>
+
+</div>
+</main>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ login }}" hint-placeholder-val="{{ false }}">
+<div data-screen-label="10 Log in" style="min-height:100vh;background:#f4f5f7">
+<div style="background:#222;color:#fff;font-size:16px;line-height:1.15;text-align:center;padding:6px clamp(12px,2vw,24px);text-wrap:pretty">OTC leveraged products, including CFDs, are complex investments, which come with a high risk of losing money rapidly due to leverage. 80% of retail client accounts lose money when trading OTC leveraged products, including CFDs, with this investment provider.</div>
+<div style="background:#087a52;border-radius:16px 16px 0 0">
+<div style="max-width:1240px;margin:0 auto;padding:0 clamp(16px,3vw,24px);height:60px;display:flex;align-items:center;justify-content:space-between;gap:16px">
+<a href="IG%20Landing%20v2.dc.html" style="font-family:Arial,Helvetica,sans-serif;color:#fff;font-weight:600;font-size:42px;letter-spacing:-0.07em;line-height:1">IG</a>
+<div style="display:flex;align-items:center;gap:30px;font-size:13px;font-weight:700">
+<span style="background:#fff;color:#000;padding:5px 12px;border-radius:999px">Application Form Full</span>
+<a href="IG%20Landing%20v2.dc.html" style="color:#fff">Go back to the homepage</a>
+</div>
+</div>
+</div>
+<div style="max-width:780px;margin:0 auto;padding:10px 16px 60px;display:flex;flex-wrap:wrap;gap:20px;align-items:flex-start">
+<div style="width:246px;flex-shrink:0;background:#fff;padding:20px 20px 50px;display:flex;flex-direction:column">
+<sc-if value="{{ created }}" hint-placeholder-val="{{ true }}"><div style="font-size:14px;line-height:1.4;color:#087a52;background:#e8f4ee;padding:8px 10px;margin-bottom:14px">Your application has been submitted. Log in to continue.</div></sc-if>
+<label style="font-size:14px;font-weight:500;margin-bottom:2px">Username</label>
+<input value="{{ user }}" onChange="{{ onUser }}" style="height:50px;border:1px solid #d6d6d6;padding:0 14px;font-size:16px;margin-bottom:30px;outline-color:#1e4c9a">
+<label style="font-size:14px;font-weight:500;margin-bottom:2px">Password</label>
+<input type="password" value="{{ pass }}" onChange="{{ onPass }}" style="height:50px;border:1px solid #d6d6d6;padding:0 14px;font-size:16px;margin-bottom:8px;outline-color:#1e4c9a">
+<a href="#" style="align-self:flex-end;font-size:14px;font-weight:500;color:#0d0d0d;margin-bottom:18px">Forgotten your login details?</a>
+<label style="display:flex;align-items:center;gap:8px;font-size:14px;font-weight:500;margin-bottom:8px;cursor:pointer"><input type="checkbox" style="width:26px;height:26px;margin:0;accent-color:#087a52">Remember my username</label>
+<p style="font-size:14px;line-height:1.45;margin:0 0 20px"><strong>Warning:</strong> only tick this box if you are using a trusted computer</p>
+<a href="IG%20My%20Account.dc.html" style="height:54px;border-radius:999px;background:#087a52;color:#fff;font-size:17px;font-weight:700;display:flex;align-items:center;justify-content:center" style-hover="background:#066443;color:#fff">Log in</a>
+</div>
+<div style="flex:1;min-width:280px;display:flex;flex-direction:column;gap:20px">
+<div style="background:#fff;border-radius:24px;overflow:hidden">
+<div style="height:214px;background:#dadada"><img src="assets/photos/new-traders.webp" alt="Woman relaxing with her dog while using a phone" style="width:100%;height:100%;object-fit:cover;display:block"></div>
+<div style="padding:24px 20px 14px">
+<h2 style="font-size:clamp(32px,4vw,42px);font-weight:800;line-height:1.18;letter-spacing:-0.02em;margin:0 0 28px">Refer your friends and earn up to $10,000*</h2>
+<p style="font-size:14px;margin:0 0 16px">*Terms and conditions apply</p>
+<a href="#" style="display:inline-flex;align-items:center;height:54px;padding:0 30px;border:1px solid #0d0d0d;border-radius:999px;font-size:17px;font-weight:600;color:#0d0d0d" style-hover="background:#f2f2f2">Learn more</a>
+</div>
+</div>
+<div style="background:#fff;border-radius:24px;padding:24px 20px">
+<h3 style="font-size:20px;font-weight:700;margin:0 0 28px">Trading Hours Updates</h3>
+<p style="font-size:14px;line-height:1.45;margin:0 0 24px">Keep track of upcoming changes to trading hours across global markets. Visit our H&amp;S page for all the details.</p>
+<a href="#" style="display:inline-flex;align-items:center;height:54px;padding:0 30px;border:1px solid #0d0d0d;border-radius:999px;font-size:17px;font-weight:600;color:#0d0d0d" style-hover="background:#f2f2f2">Learn more</a>
+</div>
+</div>
+</div>
+</div>
+</sc-if>
+
+<button aria-label="Open chat" style="position:fixed;right:8px;bottom:20px;width:48px;height:48px;border-radius:50%;background:#087a52;color:#fff;border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:60;box-shadow:0 4px 14px rgba(0,0,0,.25)" style-hover="background:#066443"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M4 5h11a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H9l-4 3v-3H4a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z"></path><path d="M17 9h3a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2h-1v3l-4-3h-2"></path><path d="M6 9h7M6 12h5"></path></svg></button>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { w: typeof innerWidth === 'number' ? innerWidth : 1400, bh: 44, step: 0, login: false, created: false,
+    f: { country: 'Malaysia', title: 'Mr', code: '+60', pob: 'Malaysia', nat: 'Malaysia', nat2: 'Singapore' },
+    showPw: false, nat2: false, emp: null, funds: {}, purp: {}, freq: {}, how: null, qual: null, agree: false, user: '', pass: '' };
+  countries = ['Malaysia', 'Nigeria', 'Singapore', 'United Kingdom', 'Australia', 'South Africa', 'United Arab Emirates', 'India', 'Kenya', 'Ghana'];
+  stepMap = [0, 1, 1, 1, 2, 3, 3, 4, 5];
+  names = ['Profile', 'Contact', 'Personal', 'Finances', 'Experience', 'Account'];
+  componentDidMount() {
+    this.r = () => { const b = document.querySelector('[data-screen-label="Application"] > div'); this.setState({ w: innerWidth, bh: b ? b.offsetHeight : 44 }); };
+    setTimeout(this.r, 50);
+    addEventListener('resize', this.r);
+    if (location.hash === '#login') this.setState({ login: true });
+  }
+  componentWillUnmount() { removeEventListener('resize', this.r); }
+  top() { try { window.scrollTo(0, 0); } catch (e) {} }
+  valid(s) {
+    const f = s.f, has = k => (f[k] || '').trim().length > 0, pw = f.pw || '';
+    switch (s.step) {
+      case 0: return has('first') && has('last') && /.+@.+\..+/.test(f.email || '') && pw.length >= 8 && pw.length <= 20 && /[A-Z]/.test(pw) && /[a-z]/.test(pw) && /\d/.test(pw);
+      case 1: return (f.phone || '').replace(/\D/g, '').length >= 6;
+      case 2: return ['house', 'street', 'city', 'postal'].every(has);
+      case 3: return /^\d{2}\/\d{2}\/\d{4}$/.test(f.dob || '');
+      case 4: return true;
+      case 5: return !!s.emp;
+      case 6: return Object.values(s.funds).some(Boolean) && Object.values(s.purp).some(Boolean);
+      case 7: return ['sb', 'etd', 'otc'].every(k => s.freq[k]) && !!s.how && !!s.qual;
+      case 8: return s.agree;
+    }
+    return false;
+  }
+  renderVals() {
+    const s = this.state, set = o => this.setState(o), isMobile = s.w < 820;
+    const on = {};
+    ['country', 'title', 'first', 'last', 'ffirst', 'flast', 'email', 'pw', 'code', 'phone', 'house', 'street', 'city', 'postal', 'dob', 'pob', 'nat', 'nat2']
+      .forEach(k => on[k] = e => { const v = e.target.value; this.setState(p => ({ f: { ...p.f, [k]: v } })); });
+    const cur = this.stepMap[s.step], ok = this.valid(s), pw = s.f.pw || '';
+    const radio = (opts, key) => opts.map(l => ({ label: l, pick: () => set({ [key]: l }), dot: s[key] === l ? '#2f6fbf' : 'transparent', border: s[key] === l ? '#2f6fbf' : '#d4d4d4' }));
+    const checks = (opts, key) => opts.map(l => ({ label: l, pick: () => set({ [key]: { ...s[key], [l]: !s[key][l] } }), box: s[key][l] ? '#2f6fbf' : '#fff', border: s[key][l] ? '#2f6fbf' : '#d4d4d4' }));
+    const rules = [['8–20 characters', pw.length >= 8 && pw.length <= 20], ['1 upper case letter', /[A-Z]/.test(pw)], ['1 lower case letter', /[a-z]/.test(pw)], ['1 number', /\d/.test(pw)]];
+    const sv = {}; for (let i = 0; i < 9; i++) sv['s' + i] = s.step === i;
+    return {
+      ...sv, inForm: !s.login, login: s.login, created: s.created, isMobile, isDesk: !isMobile,
+      cols: isMobile ? 'minmax(0,1fr)' : '280px minmax(0,1fr)',
+      sidePos: isMobile ? 'relative' : 'sticky', bannerH: isMobile ? '0' : s.bh + 'px',
+      sideH: isMobile ? 'auto' : 'calc(100vh - ' + s.bh + 'px)',
+      sidePad: isMobile ? '20px 20px 16px' : '48px 30px 36px 48px', logoGap: isMobile ? '14px' : '50px',
+      mainPad: isMobile ? '32px 20px 0' : '74px clamp(24px,10.8vw,172px) 0',
+      midTop: isMobile ? '0' : '128px', btnTop: s.step === 0 ? '56px' : s.step === 3 ? '56px' : '56px',
+      stepNo: cur + 1, stepName: this.names[cur], progress: ((cur + 1) / 6 * 100) + '%',
+      stepper: this.names.map((label, i) => ({
+        label, hasLine: i < 5, line: i < cur ? '#2e9e4f' : '#d0d1d4',
+        dot: i < cur ? '9px' : '13px', fill: i < cur ? '#2e9e4f' : '#fff',
+        ring: i < cur ? 'none' : i === cur ? '2px solid #2e9e4f' : '1.5px solid #c9cacd',
+        color: i < cur ? '#2e9e4f' : i === cur ? '#222' : '#9a9a9a', weight: i === cur ? 700 : 400 })),
+      f: s.f, on, countries: this.countries, titles: ['Mr', 'Mrs', 'Ms', 'Miss', 'Dr'],
+      codes: ['+60', '+234', '+65', '+44', '+61', '+27', '+971', '+91', '+254', '+233'],
+      pwType: s.showPw ? 'text' : 'password', togglePw: () => set({ showPw: !s.showPw }),
+      pwRules: rules.map(([label, v]) => ({ label, dot: v ? '#2e9e4f' : '#bdbdbd', text: v ? '#2e9e4f' : '#9a9a9a' })),
+      nat2: s.nat2, addNat: () => set({ nat2: !s.nat2 }), natLabel: s.nat2 ? '− Remove second nationality' : '+ Add another nationality',
+      empOpts: radio(['Employed', 'Self-employed', 'Retired', 'Unemployed'], 'emp'),
+      fundOpts: checks(['Employment', 'Inheritance', 'Savings and investments', 'Other (please specify)'], 'funds'),
+      purpOpts: checks(['Short medium term speculation', 'Hedging purposes', 'Long term growth', 'Diversified investment'], 'purp'),
+      freqRows: [['sb', 'Shares and bonds'], ['etd', 'Exchange-traded derivatives'], ['otc', 'OTC Derivatives']].map(([k, label]) => ({
+        label, opts: ['0 to 9 times', '10 to 20 times', 'Over 20 times'].map(o => {
+          const on = s.freq[k] === o;
+          return { label: o, pick: () => set({ freq: { ...s.freq, [k]: o } }), bg: on ? '#2f6fbf' : '#fff', fg: on ? '#fff' : '#222', border: on ? '#2f6fbf' : '#d4d4d4' };
+        }) })),
+      howOpts: radio(['Independently or with advice', 'Using managed funds'], 'how'),
+      qualOpts: radio(['Yes, from a relevant role in a financial institution', 'Yes, a relevant professional qualification or education', 'Yes, both of above', 'No'], 'qual'),
+      toggleAgree: () => set({ agree: !s.agree }), agreeBox: s.agree ? '#2f6fbf' : '#fff', agreeBorder: s.agree ? '#2f6fbf' : '#d4d4d4',
+      hasBack: s.step >= 3, back: () => { set({ step: s.step - 1 }); this.top(); },
+      nextDisabled: !ok, nextBg: ok ? '#3a7fc6' : '#f5f5f5', nextFg: ok ? '#fff' : '#9a9a9a', nextBorder: ok ? '#1f5a99' : '#d4d4d4',
+      nextWeight: ok ? 600 : 400, nextCursor: ok ? 'pointer' : 'default',
+      next: () => { if (!ok) return; if (s.step === 8) { try { localStorage.setItem('ej_user', JSON.stringify(s.f)); localStorage.removeItem('ej_acct'); } catch (e) {} set({ login: true, created: true, user: (s.f.email || '').split('@')[0] }); } else set({ step: s.step + 1 }); this.top(); },
+      user: s.user, pass: s.pass, onUser: e => set({ user: e.target.value }), onPass: e => set({ pass: e.target.value })
+    };
+  }
+}
+</script>
+</body>
+</html>
