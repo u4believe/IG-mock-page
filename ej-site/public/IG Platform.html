@@ -1,0 +1,474 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>IG Platform</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --text:#1a1a1a; --muted:#6b7280; --line:#e6e6e6; --line2:#ededed;
+  --blue:#2f6fbf; --red:#c23934; --green:#1ea832; --pencil:#3a7fc6;
+  --active:#e4002b; --sidebar:#ffffff; --panel:#f7f8f9; --dark:#1b1b1b;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{font-family:'Figtree',system-ui,sans-serif;color:var(--text);background:#f2f3f5;font-size:14px;-webkit-font-smoothing:antialiased}
+button{font-family:inherit}
+a{color:inherit;text-decoration:none}
+.app{display:flex;flex-direction:column;height:100vh;overflow:hidden;background:#fff}
+
+/* Top bar */
+.topbar{height:48px;flex-shrink:0;display:flex;align-items:center;border-bottom:1px solid var(--line);padding:0 10px;background:#fff}
+.logo{font-family:Arial,Helvetica,sans-serif;font-weight:700;color:var(--active);font-size:22px;letter-spacing:-.06em;margin:0 14px 0 4px}
+.ws-tab{display:flex;align-items:center;gap:8px;font-weight:600;padding:0 10px;height:100%;border-bottom:2px solid var(--active);cursor:pointer}
+.ws-tab .caret{color:#888}
+.plus{width:26px;height:26px;border-radius:4px;display:flex;align-items:center;justify-content:center;color:#555;font-size:18px;margin-left:8px;cursor:pointer}
+.plus:hover{background:#f1f2f4}
+.spacer{flex:1}
+.balances{display:flex;align-items:center;margin-right:6px}
+.bal-collapsed{display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;font-weight:700;color:#333;padding:4px 2px}
+.bal-collapsed .bal-exp{color:#9aa1ad;font-size:16px;line-height:1}
+.bal-collapsed .caret{color:#888;font-weight:400}
+.bal-expanded{display:flex;align-items:center;gap:20px}
+.bal-expanded .bal-exp{color:#9aa1ad;font-size:16px;line-height:1;cursor:pointer}
+.stat{display:flex;flex-direction:column;line-height:1.1}
+.stat .lbl{font-size:11px;color:var(--muted)}
+.stat .val{font-size:13.5px;font-weight:600}
+.stat .val.neg{color:var(--red)}
+.tbtn{height:30px;padding:0 14px;border:1px solid #c9ccd1;border-radius:4px;background:#fff;font-size:13px;font-weight:600;cursor:pointer;margin-left:8px}
+.tbtn:hover{background:#f6f7f8}
+.oneclick{display:flex;align-items:center;gap:7px;margin-left:16px;font-size:13px;color:#333;cursor:pointer;user-select:none}
+.toggle{width:30px;height:16px;border-radius:999px;background:#c9ccd1;position:relative;transition:background .15s}
+.toggle::after{content:"";position:absolute;width:12px;height:12px;border-radius:50%;background:#fff;top:2px;left:2px;transition:left .15s}
+.toggle.on{background:var(--green)}
+.toggle.on::after{left:16px}
+.help{display:flex;align-items:center;gap:6px;margin-left:16px;color:#333;font-size:13px;cursor:pointer}
+.help .q{width:18px;height:18px;border-radius:50%;background:#2f6fbf;color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700}
+.acct{display:flex;align-items:center;gap:8px;margin-left:16px;font-size:12px;color:#333;cursor:pointer}
+.acct .cfd{font-weight:700}
+.acct .ring{width:20px;height:20px;border-radius:50%;border:3px solid #1b1b1b;position:relative}
+.acct .ring::after{content:"";position:absolute;inset:2px;border-radius:50%;border:2px solid #1b1b1b}
+.ico-btn{width:28px;height:28px;display:flex;align-items:center;justify-content:center;color:#555;margin-left:10px;cursor:pointer}
+.ico-btn:hover{background:#f1f2f4;border-radius:4px}
+
+.body{flex:1;display:flex;min-height:0}
+
+/* Sidebar */
+.sidebar{width:182px;flex-shrink:0;background:var(--sidebar);border-right:1px solid var(--line);overflow-y:auto;padding:10px 0}
+.sb-search{display:flex;align-items:center;justify-content:space-between;padding:6px 16px;color:#333;cursor:pointer}
+.sb-search:hover{background:#f6f7f8}
+.sb-discover{padding:4px 16px 10px;font-weight:500}
+.sb-discover .u{border-bottom:2px solid var(--active);padding-bottom:6px;display:inline-block;cursor:pointer}
+.nav-item{display:flex;align-items:center;justify-content:space-between;padding:7px 16px;cursor:pointer;color:#1a1a1a;border-left:3px solid transparent}
+.nav-item:hover{background:#f6f7f8}
+.nav-item.active{background:#f1f2f4;border-left-color:var(--active);font-weight:600}
+.sb-head{padding:16px 16px 6px;font-size:11px;letter-spacing:.04em;color:#8a8a8a;display:flex;align-items:center;justify-content:space-between}
+.sb-sep{height:1px;background:var(--line2);margin:8px 0}
+.nav-count{display:flex;align-items:center;gap:8px;color:#8a8a8a;font-size:12px}
+
+.main{flex:1;display:flex;min-width:0;background:#e9eaec}
+
+/* Market panel */
+.market-panel{width:664px;flex-shrink:0;background:#fff;display:flex;flex-direction:column;border-right:1px solid #d7d9dd}
+.mp-head{display:flex;align-items:center;justify-content:space-between;padding:16px 18px 14px}
+.mp-title{font-size:26px;font-weight:700;letter-spacing:-.02em}
+.mp-head-right{display:flex;align-items:center;gap:16px}
+.mp-add{background:#eef1f4;border:none;height:40px;padding:0 16px;border-radius:4px;font-size:13.5px;font-weight:600;color:#1a1a1a;cursor:pointer}
+.mp-add:hover{background:#e4e8ec}
+.mp-x{color:#9aa1ad;font-size:20px;cursor:pointer;background:none;border:none}
+.mp-x:hover{color:#555}
+.mp-scroll{flex:1;overflow-y:auto;padding:0 18px 24px}
+table.mkt{width:100%;border-collapse:collapse}
+table.mkt th{font-size:11.5px;color:#8a8a8a;font-weight:500;text-align:right;padding:6px 0 10px;letter-spacing:.02em}
+table.mkt th.l{text-align:left}
+.grp td{font-size:11.5px;color:#8a8a8a;letter-spacing:.04em;padding:16px 0 8px;font-weight:600}
+tr.row{cursor:pointer}
+tr.row:hover td{background:#f6f8fa}
+tr.row.sel td{background:#eef1f3}
+tr.row.sel td:first-child{box-shadow:inset 3px 0 0 var(--active)}
+tr.row td{padding:7px 0;font-size:14px;text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+tr.row td.name{text-align:left;display:flex;align-items:center;gap:10px}
+.dot{width:9px;height:9px;border-radius:50%;background:var(--green);flex-shrink:0}
+td.pos{color:var(--blue)}
+td.neg{color:var(--red)}
+.muted{color:#b4b8bd}
+
+/* Workspace */
+.workspace{flex:1;min-width:0;position:relative;background:var(--dark)}
+.ws-empty{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:#6c6c6c;padding:40px}
+.ws-empty h2{color:#8a8a8a;font-weight:600;font-size:20px;margin:0 0 14px}
+.ws-empty p{max-width:320px;margin:4px 0;font-size:14px;line-height:1.5}
+
+/* Chart panel */
+.chart-panel{position:absolute;inset:0;background:#fff;display:none;flex-direction:column}
+.cp-head{display:flex;align-items:center;justify-content:space-between;padding:14px 16px 10px}
+.cp-title-wrap{display:flex;align-items:center;gap:20px}
+.cp-title{font-size:24px;font-weight:700}
+.cp-seg{display:flex;align-items:center;gap:18px;color:#333;font-size:14px}
+.cp-seg .s{display:flex;align-items:center;gap:5px;cursor:pointer;padding-bottom:6px;border-bottom:2px solid transparent}
+.cp-seg .s.active{border-bottom-color:var(--active)}
+.cp-seg .caret{color:#9aa1ad}
+.cp-head-right{display:flex;align-items:center;gap:16px}
+.cp-info{display:flex;align-items:center;gap:14px;padding:8px 16px;border-bottom:1px solid var(--line);font-size:14px}
+.cp-info .burger{color:#555;cursor:pointer}
+.cp-info .nm{font-weight:600;display:flex;align-items:center;gap:7px}
+.cp-info .chg{font-variant-numeric:tabular-nums;color:var(--muted)}
+.cp-actions{margin-left:auto;display:flex;gap:22px;color:#1a1a1a;font-weight:500}
+.cp-actions span{cursor:pointer}
+.cp-actions span:hover{color:var(--blue)}
+.cp-tabs{display:flex;align-items:center;gap:26px;padding:10px 16px;border-bottom:1px solid var(--line);font-size:14px;color:#555}
+.cp-tab{display:flex;align-items:center;gap:7px;cursor:pointer;padding-bottom:8px;margin-bottom:-10px;border-bottom:2px solid transparent}
+.cp-tab.active{color:#1a1a1a;font-weight:600;border-bottom-color:var(--active)}
+.cp-content{flex:1;position:relative;min-height:0}
+.tabpane{position:absolute;inset:0;overflow:auto}
+#paneChart{padding:0}
+.tv-fallback{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#9aa1ad;font-size:14px;z-index:0}
+#tvChart{position:relative;z-index:1;height:100%;width:100%}
+#paneSentiment{padding:28px 32px}
+.sent-row{max-width:520px;margin:0 auto}
+.sent-row h3{font-weight:600;margin:0 0 18px}
+.sent-bar{display:flex;height:40px;border-radius:4px;overflow:hidden;font-size:14px;font-weight:600;color:#fff}
+.sent-bar .b{background:var(--blue);display:flex;align-items:center;padding:0 12px}
+.sent-bar .s{background:var(--red);display:flex;align-items:center;justify-content:flex-end;padding:0 12px}
+.sent-legend{display:flex;justify-content:space-between;margin-top:8px;font-size:13px;color:#555}
+#paneData{padding:24px 32px}
+table.md{border-collapse:collapse;max-width:520px;width:100%}
+table.md td{padding:10px 8px;border-bottom:1px solid var(--line2);font-size:14px}
+table.md td:first-child{color:#6b7280}
+table.md td:last-child{text-align:right;font-weight:600;font-variant-numeric:tabular-nums}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- Top bar (no fake balance / P&L / margin / available) -->
+  <header class="topbar">
+    <a href="IG%20My%20Account.dc.html" class="logo" aria-label="IG home">IG</a>
+    <div class="ws-tab" onclick="toast('My Workspace')">My Workspace <span class="caret">▾</span></div>
+    <div class="plus" onclick="toast('Add workspace')">+</div>
+    <div class="spacer"></div>
+    <div class="balances">
+      <div class="bal-collapsed" id="balCollapsed" onclick="toggleBalances()">
+        <span class="bal-exp">&laquo;</span><span>BALANCES</span><span class="caret">▾</span>
+      </div>
+      <div class="bal-expanded" id="balExpanded" style="display:none">
+        <span class="bal-exp" onclick="toggleBalances()" title="Collapse">&raquo;</span>
+        <div class="stat"><span class="lbl">Funds</span><span class="val">US$0.00</span></div>
+        <div class="stat"><span class="lbl">Profit/Loss</span><span class="val">US$0.00</span></div>
+        <div class="stat"><span class="lbl">Margin</span><span class="val">US$0.00</span></div>
+        <div class="stat"><span class="lbl">Available</span><span class="val">US$0.00</span></div>
+      </div>
+    </div>
+    <button class="tbtn" onclick="toast('Manage funds')">Manage funds</button>
+    <button class="tbtn" onclick="toast('Add funds')">Add funds</button>
+    <div class="oneclick" onclick="toggleOneClick(this)">1-Click <span class="toggle"></span></div>
+    <div class="help" onclick="toast('Help')"><span class="q">?</span> Help</div>
+    <div class="acct" onclick="toast('Account ' + ACC_ID)"><span class="ring"></span><div><div class="cfd">CFD</div><div>Acc no.: <span id="accId">—</span></div></div><span class="caret" style="color:#9aa1ad">▾</span></div>
+    <div class="ico-btn" onclick="toast('Menu')">☰</div>
+  </header>
+
+  <div class="body">
+
+    <aside class="sidebar">
+      <div class="sb-search" onclick="toast('Search')"><span>Search</span><span>🔍</span></div>
+      <div class="sb-discover"><span class="u" onclick="toast('DiscoverAI')">DiscoverAI</span></div>
+      <div id="nav"></div>
+      <div class="sb-head">WATCHLISTS <span style="cursor:pointer" onclick="toast('Watchlists')">★</span></div>
+      <div class="sb-sep"></div>
+      <div class="nav-item" onclick="toast('Positions')">Positions <span class="nav-count">⇅</span></div>
+      <div class="nav-item" onclick="toast('Orders')">Orders <span class="nav-count">🏷</span></div>
+      <div class="nav-item" onclick="toast('History')">History <span class="nav-count">🕑</span></div>
+      <div class="nav-item" onclick="toast('Alerts')">Alerts <span class="nav-count">🔔</span></div>
+      <div class="sb-sep"></div>
+      <div class="nav-item" onclick="toast('News')">News <span class="nav-count">▦</span></div>
+      <div class="nav-item" onclick="toast('Signals')">Signals <span class="nav-count">📶</span></div>
+      <div class="nav-item" onclick="toast('TipRanks')">TipRanks <span class="nav-count">Ⓡ</span></div>
+      <div class="nav-item" onclick="toast('Economic Calendar')">Economic Calendar <span class="nav-count">📅</span></div>
+      <div class="nav-item" onclick="toast('Stock Screener')">Stock Screener <span class="nav-count">⚟</span></div>
+      <div class="sb-sep"></div>
+      <div class="nav-item" onclick="toast('Settings')">Settings <span class="nav-count">⚙</span></div>
+      <div class="nav-item" onclick="toast('Menu hidden')">Hide menu <span class="nav-count">«</span></div>
+    </aside>
+
+    <main class="main">
+
+      <section class="market-panel">
+        <div class="mp-head">
+          <div class="mp-title" id="mpTitle">Commodities</div>
+          <div class="mp-head-right">
+            <button class="mp-add" onclick="toast('Added to workspace')">Add to workspace ↗</button>
+            <button class="mp-x" onclick="closeChart()">✕</button>
+          </div>
+        </div>
+        <div class="mp-scroll">
+          <table class="mkt">
+            <thead><tr>
+              <th class="l">MARKET (most popular first) ⇅</th>
+              <th>SELL</th><th>BUY</th><th>CHANGE</th><th>% CHANGE</th>
+            </tr></thead>
+            <tbody id="mkbody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="workspace">
+        <div class="ws-empty" id="wsEmpty">
+          <h2>New workspace</h2>
+          <p>Build a group of markets, or maybe for your charts to fill each of your screens — it's really up to you.</p>
+          <p>Click on any market and its live chart will appear here.</p>
+        </div>
+
+        <div class="chart-panel" id="chartPanel">
+          <div class="cp-head">
+            <div class="cp-title-wrap">
+              <span class="cp-title" id="cpTitle">—</span>
+              <div class="cp-seg">
+                <span class="s active" id="segSpot" onclick="setSeg('spot')">Spot <span class="caret">▾</span></span>
+                <span class="s" id="segFut" onclick="setSeg('fut')">Futures <span class="caret">▾</span></span>
+              </div>
+            </div>
+            <div class="cp-head-right"><button class="mp-x" onclick="closeChart()">✕</button></div>
+          </div>
+          <div class="cp-info">
+            <span class="burger" onclick="toast('Markets menu')">☰</span>
+            <span class="nm"><span class="dot"></span><span id="cpName">—</span></span>
+            <span class="chg" id="cpChg"></span>
+            <span class="cp-actions"><span onclick="toast('Deal ticket')">Deal</span><span onclick="toast('Order ticket')">Order</span><span onclick="toast('Alert set')">Alert</span><span onclick="toast('Market info')">Info</span></span>
+          </div>
+          <div class="cp-tabs">
+            <span class="cp-tab active" data-tab="chart" onclick="setTab(this)">📈 Chart</span>
+            <span class="cp-tab" data-tab="sentiment" onclick="setTab(this)">↻ Client Sentiment</span>
+            <span class="cp-tab" data-tab="data" onclick="setTab(this)">▤ Market data ↗</span>
+          </div>
+          <div class="cp-content">
+            <div class="tabpane" id="paneChart">
+              <div class="tv-fallback">Loading live chart from TradingView…</div>
+              <div class="tradingview-widget-container" id="tvChart">
+                <div class="tradingview-widget-container__widget" style="height:calc(100% - 28px);width:100%"></div>
+                <div class="tradingview-widget-copyright" style="font-size:11px;padding:5px 10px;color:#9aa1ad"><a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank" style="color:#2f6fbf">Track all markets on TradingView</a></div>
+              </div>
+            </div>
+            <div class="tabpane" id="paneSentiment" style="display:none">
+              <div class="sent-row">
+                <h3 id="sentTitle">Client sentiment</h3>
+                <div class="sent-bar"><div class="b" id="sentBuy" style="width:60%">60% Buyers</div><div class="s" id="sentSell" style="width:40%">40% Sellers</div></div>
+                <div class="sent-legend"><span>Buy</span><span>Sell</span></div>
+                <p style="color:#6b7280;font-size:13px;margin-top:20px">Percentage of IG client accounts with positions in this market that are long or short. Data is indicative.</p>
+              </div>
+            </div>
+            <div class="tabpane" id="paneData" style="display:none"><table class="md" id="mdTable"></table></div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+</div>
+
+<div id="toast" style="position:fixed;bottom:22px;left:50%;transform:translateX(-50%);background:#1b1b1b;color:#fff;padding:9px 16px;border-radius:6px;font-size:13px;opacity:0;pointer-events:none;transition:opacity .2s;z-index:100"></div>
+
+<script>
+// ---------- Unique account ID (same style as Z6G11D), persisted per browser ----------
+function genAccId(){
+  var chars='ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789', out='';
+  for(var i=0;i<6;i++) out+=chars[Math.floor(Math.random()*chars.length)];
+  return out;
+}
+var ACC_ID;
+try{ ACC_ID=localStorage.getItem('ig_acc_id'); if(!ACC_ID){ ACC_ID=genAccId(); localStorage.setItem('ig_acc_id',ACC_ID); } }
+catch(e){ ACC_ID=genAccId(); }
+document.getElementById('accId').textContent=ACC_ID;
+
+// ---------- Catalogue: [name, yahooSymbol, tradingviewSymbol, decimals] ----------
+// Every listed market has a real data feed (price/change via /api/quotes, chart via TradingView).
+var CATS = {
+  'Indices': [['', [
+    ['Wall Street','^DJI','OANDA:US30USD',1],['US 500','^GSPC','OANDA:SPX500USD',1],['US Tech 100','^NDX','OANDA:NAS100USD',1],
+    ['Germany 40','^GDAXI','OANDA:DE30EUR',1],['FTSE 100','^FTSE','OANDA:UK100GBP',1],['France 40','^FCHI','OANDA:FR40EUR',1],
+    ['Japan 225','^N225','OANDA:JP225USD',1],['Hong Kong HS50','^HSI','OANDA:HK33HKD',1],['Australia 200','^AXJO','OANDA:AU200AUD',1]
+  ]]],
+  'FX': [['MAJORS', [
+    ['EUR/USD','EURUSD=X','FX:EURUSD',5],['GBP/USD','GBPUSD=X','FX:GBPUSD',5],['USD/JPY','JPY=X','FX:USDJPY',3],
+    ['AUD/USD','AUDUSD=X','FX:AUDUSD',5],['USD/CHF','CHF=X','FX:USDCHF',5],['EUR/GBP','EURGBP=X','FX:EURGBP',5],
+    ['USD/CAD','CAD=X','FX:USDCAD',5],['NZD/USD','NZDUSD=X','FX:NZDUSD',5]
+  ]]],
+  'Cryptocurrency': [['CRYPTO', [
+    ['Bitcoin (USD)','BTC-USD','BINANCE:BTCUSDT',0],['Ether (USD)','ETH-USD','BINANCE:ETHUSDT',1],
+    ['Litecoin (USD)','LTC-USD','BINANCE:LTCUSDT',2],['Ripple (USD)','XRP-USD','BINANCE:XRPUSDT',4],
+    ['Bitcoin Cash (USD)','BCH-USD','BINANCE:BCHUSDT',1],['Solana (USD)','SOL-USD','BINANCE:SOLUSDT',2]
+  ]]],
+  'Shares': [['US SHARES', [
+    ['NVIDIA Corp','NVDA','NASDAQ:NVDA',2],['Amazon.com Inc','AMZN','NASDAQ:AMZN',2],['Apple Inc','AAPL','NASDAQ:AAPL',2],
+    ['Tesla Inc','TSLA','NASDAQ:TSLA',2],['Microsoft Corp','MSFT','NASDAQ:MSFT',2],['Meta Platforms','META','NASDAQ:META',2],
+    ['Super Micro Computer','SMCI','NASDAQ:SMCI',2]
+  ]]],
+  'Commodities': [
+    ['ENERGIES', [
+      ['Oil - US Crude','CL=F','TVC:USOIL',2],['Oil - Brent Crude','BZ=F','TVC:UKOIL',2],['Natural Gas','NG=F','OANDA:NATGASUSD',3]
+    ]],
+    ['PRECIOUS METALS', [
+      ['Gold','GC=F','OANDA:XAUUSD',2],['Silver','SI=F','OANDA:XAGUSD',3],['Platinum','PL=F','OANDA:XPTUSD',1],['Palladium','PA=F','OANDA:XPDUSD',1]
+    ]],
+    ['BASE METALS', [
+      ['Copper','HG=F','CAPITALCOM:XCUUSD',4]
+    ]],
+    ['SOFT COMMODITIES', [
+      ['Coffee - Arabica','KC=F','PEPPERSTONE:COFFEE',2],['Sugar No.11','SB=F','PEPPERSTONE:SUGAR',2],['Cocoa','CC=F','CAPITALCOM:COCOA',0],['Cotton No.2','CT=F','SKILLING:COTTON',2]
+    ]]
+  ],
+  'ETFs': [['POPULAR ETFs', [
+    ['SPDR S&P 500 (SPY)','SPY','AMEX:SPY',2],['Invesco QQQ','QQQ','NASDAQ:QQQ',2],['iShares Russell 2000','IWM','AMEX:IWM',2],
+    ['SPDR Gold Shares','GLD','AMEX:GLD',2],['ARK Innovation','ARKK','AMEX:ARKK',2]
+  ]]]
+};
+var navItems = ['Indices','FX','Cryptocurrency','Shares','Commodities','ETFs'];
+var currentCat = 'Commodities';
+var refreshTimer = null;
+
+// Sidebar
+document.getElementById('nav').innerHTML = navItems.map(function(n){
+  return '<div class="nav-item'+(n===currentCat?' active':'')+'" data-cat="'+n+'" onclick="selectCat(this)">'+n+'</div>';
+}).join('');
+
+function fmt(n,d){ return Number(n).toLocaleString('en-US',{minimumFractionDigits:d,maximumFractionDigits:d}); }
+
+// Render a category's rows (prices filled live by loadQuotes)
+function renderTable(cat){
+  var groups = CATS[cat], out='';
+  groups.forEach(function(g, gi){
+    if(g[0]) out += '<tr class="grp"><td colspan="5">'+g[0]+'</td></tr>';
+    g[1].forEach(function(r, ri){
+      out += '<tr class="row" data-y="'+r[1]+'" data-tv="'+r[2]+'" data-name="'+r[0]+'" data-dec="'+r[3]+'" onclick="selectRow(this)">'
+        + '<td class="name"><span class="dot"></span><span>'+r[0]+'</span></td>'
+        + '<td class="sell muted">…</td><td class="buy muted">…</td>'
+        + '<td class="chg muted">…</td><td class="pc muted">…</td></tr>';
+    });
+  });
+  document.getElementById('mkbody').innerHTML = out;
+}
+
+// Fetch real quotes for the visible category and fill the rows
+function loadQuotes(cat){
+  var rows = Array.prototype.slice.call(document.querySelectorAll('#mkbody tr.row'));
+  var syms = rows.map(function(tr){ return tr.getAttribute('data-y'); });
+  if(!syms.length) return;
+  fetch('/api/quotes?symbols='+encodeURIComponent(syms.join(','))).then(function(r){return r.json();}).then(function(data){
+    rows.forEach(function(tr){
+      var sym=tr.getAttribute('data-y'), dec=+tr.getAttribute('data-dec'), q=data[sym];
+      var sell=tr.querySelector('.sell'), buy=tr.querySelector('.buy'), chg=tr.querySelector('.chg'), pc=tr.querySelector('.pc');
+      if(!q || typeof q.price!=='number'){ [sell,buy,chg,pc].forEach(function(c){c.textContent='n/a';c.className=c.className.replace(/ (pos|neg)/,'')+'';}); return; }
+      var price=q.price, pct=q.pct||0;
+      var prev = pct ? price/(1+pct/100) : price;
+      var change = price-prev;
+      var spread = Math.max(price*0.00006, Math.pow(10,-dec));
+      sell.textContent=fmt(price-spread/2,dec); buy.textContent=fmt(price+spread/2,dec);
+      var cls = pct<0 ? 'neg' : 'pos';
+      chg.textContent=(change>=0?'+':'-')+fmt(Math.abs(change),dec); chg.className='chg '+cls;
+      pc.textContent=(pct>=0?'+':'-')+Math.abs(pct).toFixed(2); pc.className='pc '+cls;
+      sell.className='sell'; buy.className='buy';
+      // stash latest for the chart header
+      tr.dataset.price=price; tr.dataset.pct=pct.toFixed(2); tr.dataset.change=(change>=0?'+':'-')+fmt(Math.abs(change),dec);
+    });
+    refreshChartHeader();
+  }).catch(function(){});
+}
+
+function selectCat(el){
+  document.querySelectorAll('.nav-item.active').forEach(function(x){x.classList.remove('active');});
+  el.classList.add('active');
+  currentCat = el.getAttribute('data-cat');
+  document.getElementById('mpTitle').textContent = currentCat;
+  renderTable(currentCat);
+  closeChart();
+  loadQuotes(currentCat);
+  if(refreshTimer) clearInterval(refreshTimer);
+  refreshTimer = setInterval(function(){ loadQuotes(currentCat); }, 20000);
+}
+
+// ---------- Live TradingView chart ----------
+function buildTVChart(symbol){
+  var host = document.getElementById('tvChart');
+  if(!host) return;
+  host.innerHTML = '<div class="tradingview-widget-container__widget" style="height:calc(100% - 28px);width:100%"></div>'
+    + '<div class="tradingview-widget-copyright" style="font-size:11px;padding:5px 10px;color:#9aa1ad"><a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank" style="color:#2f6fbf">Track all markets on TradingView</a></div>';
+  var s = document.createElement('script');
+  s.src = 'https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js';
+  s.type='text/javascript'; s.async=true;
+  s.innerHTML = JSON.stringify({
+    autosize:true, symbol:symbol, interval:'D', timezone:'Africa/Lagos',
+    theme:'light', style:'1', locale:'en', allow_symbol_change:true,
+    withdateranges:true, hide_side_toolbar:false, support_host:'https://www.tradingview.com'
+  });
+  host.appendChild(s);
+}
+
+var selectedRow = null;
+function refreshChartHeader(){
+  if(!selectedRow) return;
+  var pct=parseFloat(selectedRow.dataset.pct||'0');
+  var chg=selectedRow.dataset.change||'';
+  var el=document.getElementById('cpChg');
+  if(chg){ el.textContent = chg+'  '+(pct>=0?'+':'-')+Math.abs(pct).toFixed(2)+'%'; el.style.color = pct<0?'var(--red)':'var(--blue)'; }
+}
+
+function selectRow(tr){
+  document.querySelectorAll('tr.row.sel').forEach(function(x){x.classList.remove('sel');});
+  tr.classList.add('sel');
+  selectedRow = tr;
+  var name=tr.getAttribute('data-name'), tv=tr.getAttribute('data-tv');
+  document.getElementById('cpTitle').textContent = name;
+  document.getElementById('cpName').textContent = name;
+  refreshChartHeader();
+  // sentiment + data (indicative, derived from the live move)
+  var pct=parseFloat(tr.dataset.pct||'0');
+  var buy = Math.max(20, Math.min(80, Math.round(50 + pct*4)));
+  document.getElementById('sentTitle').textContent='Client sentiment · '+name;
+  document.getElementById('sentBuy').style.width=buy+'%'; document.getElementById('sentBuy').textContent=buy+'% Buyers';
+  document.getElementById('sentSell').style.width=(100-buy)+'%'; document.getElementById('sentSell').textContent=(100-buy)+'% Sellers';
+  document.getElementById('mdTable').innerHTML =
+     '<tr><td>Sell</td><td>'+(tr.querySelector('.sell')?tr.querySelector('.sell').textContent:'-')+'</td></tr>'
+    +'<tr><td>Buy</td><td>'+(tr.querySelector('.buy')?tr.querySelector('.buy').textContent:'-')+'</td></tr>'
+    +'<tr><td>Change</td><td>'+(tr.dataset.change||'-')+'</td></tr>'
+    +'<tr><td>% Change</td><td>'+(tr.dataset.pct||'-')+'%</td></tr>'
+    +'<tr><td>Market</td><td>'+currentCat+'</td></tr>';
+  document.querySelectorAll('.cp-tab').forEach(function(x){x.classList.toggle('active', x.getAttribute('data-tab')==='chart');});
+  showPane('chart');
+  document.getElementById('wsEmpty').style.display='none';
+  document.getElementById('chartPanel').style.display='flex';
+  buildTVChart(tv);
+}
+function closeChart(){
+  selectedRow=null;
+  document.getElementById('chartPanel').style.display='none';
+  document.getElementById('wsEmpty').style.display='flex';
+  document.querySelectorAll('tr.row.sel').forEach(function(x){x.classList.remove('sel');});
+}
+
+// Tabs / toggles
+function showPane(which){
+  document.getElementById('paneChart').style.display = which==='chart'?'block':'none';
+  document.getElementById('paneSentiment').style.display = which==='sentiment'?'block':'none';
+  document.getElementById('paneData').style.display = which==='data'?'block':'none';
+}
+function setTab(el){ document.querySelectorAll('.cp-tab').forEach(function(x){x.classList.remove('active');}); el.classList.add('active'); showPane(el.getAttribute('data-tab')); }
+function setSeg(which){ document.getElementById('segSpot').classList.toggle('active', which==='spot'); document.getElementById('segFut').classList.toggle('active', which==='fut'); toast(which==='spot'?'Spot':'Futures'); }
+function toggleOneClick(el){ el.querySelector('.toggle').classList.toggle('on'); }
+function toggleBalances(){
+  var c=document.getElementById('balCollapsed'), e=document.getElementById('balExpanded');
+  var open = e.style.display==='none';
+  e.style.display = open ? 'flex' : 'none';
+  c.style.display = open ? 'none' : 'flex';
+}
+
+var _tt;
+function toast(msg){ var t=document.getElementById('toast'); t.textContent=msg; t.style.opacity='1'; clearTimeout(_tt); _tt=setTimeout(function(){t.style.opacity='0';},1200); }
+
+// Init
+renderTable(currentCat);
+loadQuotes(currentCat);
+refreshTimer = setInterval(function(){ loadQuotes(currentCat); }, 20000);
+</script>
+</body>
+</html>

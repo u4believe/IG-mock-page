@@ -363,7 +363,7 @@ class Component extends DCLogic {
       { title: 'How to trade', links: ['CFD trading'] },
       { title: 'What to trade', links: ['Forex trading', 'Indices', 'Shares', 'Commodities', 'Cryptocurrencies', 'Thematic and basket', 'Other markets'] },
       { title: 'Discover more', links: ['Create an account', 'Out-of-hours trading', 'Weekend trading', 'Volatility trading', 'Knock-Outs trading', 'Options trading', 'Futures trading', 'Spot trading', 'Market data', 'Interest rates'] }] },
-    { key: 'platforms', label: 'Trading platforms', title: 'PLATFORMS AND TOOLS', icon: 'assets/menu-icon-platforms.svg', img: 'assets/photos/menu-platforms.png', card: 'Trade on the go, anytime, anywhere.', btn: 'Download our app',
+    { key: 'platforms', label: 'Trading platforms', title: 'PLATFORMS AND TOOLS', icon: 'assets/menu-icon-platforms.svg', img: 'assets/photos/menu-platforms-app.webp', card: 'Trade on the go, anytime, anywhere.', btn: 'Download our app',
       extra: ['Mobile trading', 'Compare platforms', 'Explore on demo'], cols: [
       { title: 'Third party platforms', links: ['L2 Dealer', 'ProRealTime', 'MetaTrader 4', 'MetaTrader 5', 'TradingView'] },
       { title: 'Tools', links: ['Stock screener', 'Economic and trading calendar', 'Trade analytics tool', 'Trading alerts', 'Trading charts', 'Trading signals', 'Forex Signals'] },
@@ -441,8 +441,32 @@ class Component extends DCLogic {
     this.onResize = () => this.setState({ w: window.innerWidth });
     window.addEventListener('resize', this.onResize);
     this.timer = setInterval(() => this.tick(), 1100);
+    this.loadReal();
+    this.realTimer = setInterval(() => this.loadReal(), 30000);
   }
-  componentWillUnmount() { window.removeEventListener('resize', this.onResize); clearInterval(this.timer); }
+  componentWillUnmount() { window.removeEventListener('resize', this.onResize); clearInterval(this.timer); clearInterval(this.realTimer); }
+  loadReal() {
+    const map = { eurusd: 'EURUSD=X', gbpusd: 'GBPUSD=X', usdjpy: 'JPY=X', gold: 'GC=F', us500: '^GSPC', eth: 'ETH-USD', nvda: 'NVDA', uk100: '^FTSE', de40: '^GDAXI', btc: 'BTC-USD', oil: 'CL=F', aapl: 'AAPL', spy: 'SPY', us30: '^DJI', ustech: '^NDX' };
+    const syms = Object.keys(map).map(k => map[k]);
+    fetch('/api/quotes?symbols=' + encodeURIComponent(syms.join(','))).then(r => r.json()).then(data => {
+      this.setState(s => {
+        const q = Object.assign({}, s.q);
+        this.inst.forEach(i => {
+          const d = data[map[i.id]];
+          if (d && typeof d.price === 'number') {
+            i.p = d.price;
+            const prevClose = d.pct ? d.price / (1 + d.pct / 100) : d.price;
+            const hist = (s.q[i.id] && s.q[i.id].hist) ? s.q[i.id].hist : [d.price];
+            q[i.id] = { mid: d.price, open: prevClose, hist };
+          }
+        });
+        return { q };
+      });
+      const rf = {};
+      ['us30', 'ustech'].forEach(id => { const d = data[map[id]]; if (d && typeof d.price === 'number') rf[id] = d; });
+      this.realFixed = rf; this.forceUpdate();
+    }).catch(() => {});
+  }
   tick() {
     if (this.props.liveData === false) return;
     this.setState(s => {
@@ -461,7 +485,11 @@ class Component extends DCLogic {
     const fixed = { us30: ['50502', '+0.63%', true], ustech: ['27644.5', '+2.01%', true] };
     return defs.map(([id, name]) => {
       const base = { name, icon: 'assets/tickers/' + id + '.png' };
-      if (fixed[id]) { const [p, c, up] = fixed[id]; return { ...base, price: p, pct: c, chgColor: up ? '#1d5fd3' : '#e0322b' }; }
+      if (fixed[id]) {
+        const rf = this.realFixed && this.realFixed[id];
+        if (rf) { const up = rf.pct >= 0; return { ...base, price: this.fmt(rf.price, id === 'ustech' ? 1 : 0), pct: (up ? '+' : '-') + Math.abs(rf.pct).toFixed(2) + '%', chgColor: up ? '#1d5fd3' : '#e0322b' }; }
+        const [p, c, up] = fixed[id]; return { ...base, price: p, pct: c, chgColor: up ? '#1d5fd3' : '#e0322b' };
+      }
       const q = this.quote(id);
       return { ...base, price: q.price, pct: q.pct, chgColor: q.pct[0] === '-' ? '#e0322b' : '#1d5fd3' };
     });

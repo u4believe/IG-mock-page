@@ -70,7 +70,7 @@ button,input,select{font-family:inherit}
 <sc-if value="{{ docsDone }}" hint-placeholder-val="{{ false }}"><span style="font-size:16px">$0.00</span><span style="font-size:16px">$0.00</span><span style="font-size:16px">$0.00</span><span style="font-size:16px;text-align:right;padding-right:24px">$0.00</span></sc-if>
 </div>
 <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-top:8px">
-<button style="width:148px;height:28px;border:1px solid #3a7fc6;border-radius:2px;background:#fff;color:#2f6fbf;font-size:14px;cursor:pointer;box-shadow:0 1px 2px rgba(0,0,0,.15)">Open platform</button>
+<a href="IG%20Platform.html" style="width:148px;height:28px;border:1px solid #3a7fc6;border-radius:2px;background:#fff;color:#2f6fbf;font-size:14px;cursor:pointer;box-shadow:0 1px 2px rgba(0,0,0,.15);display:inline-flex;align-items:center;justify-content:center">Open platform</a>
 <sc-if value="{{ needsDocs }}" hint-placeholder-val="{{ true }}"><button onClick="{{ upload }}" style="background:none;border:none;color:#2f6fbf;text-decoration:underline;font-size:13px;cursor:pointer">Activate your account</button></sc-if>
 <sc-if value="{{ docsDone }}" hint-placeholder-val="{{ false }}"><button style="height:24px;padding:0 28px;border:1px solid #1f5a99;border-radius:2px;background:#3a7fc6;color:#fff;font-size:13px;font-weight:600;cursor:pointer">+ Add funds</button></sc-if>
 <a href="#" style="font-size:11px">Enable Advanced Charts-ProRealTime</a>
@@ -94,7 +94,7 @@ button,input,select{font-family:inherit}
 <span style="font-size:16px">$20,000.00</span><span style="font-size:16px">$0.00</span><span style="font-size:16px">$20,000.00</span><span style="font-size:16px;text-align:right;padding-right:24px">$0.00</span>
 </div>
 <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-top:8px">
-<button style="width:148px;height:28px;border:1px solid #1f5a99;border-radius:2px;background:#3a7fc6;color:#fff;font-size:14px;cursor:pointer">Open platform</button>
+<a href="IG%20Platform.html" style="width:148px;height:28px;border:1px solid #1f5a99;border-radius:2px;background:#3a7fc6;color:#fff;font-size:14px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center">Open platform</a>
 <button style="height:24px;padding:0 10px;border:1px solid #3a7fc6;border-radius:2px;background:#fff;color:#2f6fbf;font-size:13px;cursor:pointer">+ Add virtual funds</button>
 <a href="#" style="font-size:11px">Enable Advanced Charts-ProRealTime</a>
 </div>
@@ -105,15 +105,7 @@ button,input,select{font-family:inherit}
 
 <div style="display:flex;flex-direction:column;gap:18px">
 <div style="background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.1);padding-bottom:8px">
-<div style="background:#000;border-radius:16px;overflow:hidden;display:grid;grid-template-columns:1fr 1fr;min-height:296px">
-<div style="padding:44px 20px 20px;color:#fff;display:flex;flex-direction:column">
-<div style="font-size:clamp(22px,2vw,28px);font-weight:800;line-height:1.15;letter-spacing:-0.03em;margin-bottom:18px">Partner with the World’s No.1 CFD Provider*</div>
-<div style="display:flex;flex-direction:column;gap:6px;font-size:14px;font-weight:600;margin-bottom:16px"><span>✓ Earn Up to $2,045 CPA</span><span>✓ Unlock Ongoing High Revenue Share</span></div>
-<a href="#" style="align-self:flex-start;background:#087a52;color:#fff;border-radius:999px;padding:8px 18px;font-size:11px;font-weight:700">Inquire Today</a>
-</div>
-<div style="background:#dadada"><img src="assets/photos/experienced-traders.webp" alt="Partners" style="width:100%;height:100%;object-fit:cover;display:block"></div>
-</div>
-<p style="font-size:8px;line-height:1.35;margin:8px 12px 0">*Based on revenue published financial statements, August 2024.<br>IG products are complex, high risk and losses can be substantial. 71% of retail client accounts lose money when trading CFDs, with this investment provider.</p>
+<img src="assets/partner.png" alt="Partner with the World’s No.1 CFD Provider" style="width:100%;display:block;border-radius:12px">
 </div>
 <div style="background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.1)">
 <div style="font-size:17px;font-weight:500;padding:10px 24px;border-bottom:1px solid #ccc">Live prices</div>
@@ -122,10 +114,7 @@ button,input,select{font-family:inherit}
 <sc-for list="{{ prices }}" as="p" hint-placeholder-count="6"><div style="display:grid;grid-template-columns:minmax(0,1.6fr) 1fr 1fr 1fr .9fr;font-size:14px;height:25px;align-items:center;gap:6px"><span style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ p.n }}</span><span style="text-align:right">{{ p.s }}</span><span style="text-align:right">{{ p.b }}</span><span style="text-align:right;color:{{ p.c }}">{{ p.ch }}</span><span style="text-align:right;color:{{ p.c }}">{{ p.pc }}</span></div></sc-for>
 </div>
 </div>
-<div style="background:#087a52;color:#fff;display:grid;grid-template-columns:1fr 1fr;min-height:160px;overflow:hidden">
-<div style="padding:14px 16px;font-size:clamp(24px,2.2vw,32px);font-weight:800;line-height:1.05;letter-spacing:-0.02em">Refer your friends and earn up to $10,000*</div>
-<div style="background:#dadada"><img src="assets/photos/new-traders.webp" alt="Refer a friend" style="width:100%;height:100%;object-fit:cover;display:block"></div>
-</div>
+<img src="assets/refer.png" alt="Refer your friends and earn up to $10,000" style="width:100%;display:block">
 </div>
 </div>
 </sc-if>
@@ -230,8 +219,14 @@ class Component extends DCLogic {
     let d = {}; try { d = JSON.parse(localStorage.getItem('ej_acct') || '{}'); } catch (e) {}
     const t = (location.hash || '').slice(1);
     this.setState({ u, demo: !!d.demo, docs: !!d.docs, tab: ['dash', 'live', 'demo', 'set'].includes(t) ? t : 'dash' });
+    this.loadReal();
+    this.rt = setInterval(() => this.loadReal(), 30000);
   }
-  componentWillUnmount() { removeEventListener('resize', this.r); }
+  loadReal() {
+    const syms = ['CL=F', 'GC=F', 'JPY=X', 'GBPUSD=X', '^DJI', 'SI=F'];
+    fetch('/api/quotes?symbols=' + encodeURIComponent(syms.join(','))).then(r => r.json()).then(d => { this.setState({ rq: d }); }).catch(() => {});
+  }
+  componentWillUnmount() { removeEventListener('resize', this.r); clearInterval(this.rt); }
   save(o) { this.setState(o, () => { try { localStorage.setItem('ej_acct', JSON.stringify({ demo: this.state.demo, docs: this.state.docs })); } catch (e) {} }); }
   renderVals() {
     const s = this.state, u = s.u, isMobile = s.w < 900, set = o => this.setState(o);
@@ -257,8 +252,24 @@ class Component extends DCLogic {
       liveId: 'OWW9A', demoId: 'Z6G11D', noDemo: !s.demo, hasDemo: s.demo, goDemo: go('demo'),
       ack: s.ack, noAck: !s.ack, toggleAck: () => set({ ack: !s.ack }), ackBg: s.ack ? '#3a7fc6' : '#f0f0f0', ackFg: s.ack ? '#fff' : '#9a9a9a', ackCur: s.ack ? 'pointer' : 'default',
       createDemo: () => { if (s.ack) this.save({ demo: true }); },
-      prices: [['Oil - US Crude ($1)', '8233.4', '8238.2', '-240.5', '-2.84'], ['Gold Spot ($1)', '3741.68', '3741.78', '-107.30', '-2.79'], ['USD/JPY', '159.287', '159.297', '-0.080', '-0.05'], ['GBP/USD', '1.31415', '1.31430', '-0.00676', '-0.51'], ['Wall Street Cash', '46215.0', '46219.0', '+182.4', '+0.40'], ['Spot Silver ($1)', '4498.7', '4502.7', '-237.7', '-5.02']]
-        .map(([n, sv, b, ch, pc]) => ({ n, s: sv, b, ch, pc, c: ch.startsWith('-') ? R : ch.startsWith('+') ? '#2e7d32' : G })),
+      prices: (() => {
+        const defs = [['Oil - US Crude ($1)', 'CL=F', 2, 0.5], ['Gold Spot ($1)', 'GC=F', 2, 0.1], ['USD/JPY', 'JPY=X', 3, 0.01], ['GBP/USD', 'GBPUSD=X', 5, 0.00008], ['Wall Street Cash', '^DJI', 1, 2], ['Spot Silver ($1)', 'SI=F', 3, 0.004]];
+        const fb = { 'CL=F': ['8233.4', '8238.2', '-240.5', '-2.84'], 'GC=F': ['3741.68', '3741.78', '-107.30', '-2.79'], 'JPY=X': ['159.287', '159.297', '-0.080', '-0.05'], 'GBPUSD=X': ['1.31415', '1.31430', '-0.00676', '-0.51'], '^DJI': ['46215.0', '46219.0', '+182.4', '+0.40'], 'SI=F': ['4498.7', '4502.7', '-237.7', '-5.02'] };
+        const rq = s.rq || {};
+        const nf = (x, d) => Number(x).toLocaleString('en-US', { minimumFractionDigits: d, maximumFractionDigits: d });
+        return defs.map(([n, sym, dec, spread]) => {
+          const q = rq[sym];
+          let sv, b, ch, pc;
+          if (q && typeof q.price === 'number') {
+            const prev = q.pct ? q.price / (1 + q.pct / 100) : q.price;
+            const chg = q.price - prev;
+            sv = nf(q.price, dec); b = nf(q.price + spread, dec);
+            ch = (chg >= 0 ? '+' : '-') + nf(Math.abs(chg), dec);
+            pc = (q.pct >= 0 ? '+' : '-') + Math.abs(q.pct).toFixed(2);
+          } else { const f = fb[sym]; sv = f[0]; b = f[1]; ch = f[2]; pc = f[3]; }
+          return { n, s: sv, b, ch, pc, c: ch.startsWith('-') ? R : ch.startsWith('+') ? '#2e7d32' : G };
+        });
+      })(),
       liveMenu: menu(['Overview', 'Payments', 'Deposit funds', 'Withdraw funds', 'Verification', 'Card / bank details', 'Currency conversion', 'Send proof of payment', 'Trade analytics', 'History', 'Statements', 'Corporate actions', 'Documents'], ['Deposit funds', 'Withdraw funds', 'Verification', 'Card / bank details', 'Currency conversion', 'Send proof of payment']),
       demoMenu: menu(['Overview', 'Payments', 'Deposit funds', 'History', 'Statements'], ['Deposit funds']),
       liveBal: bal('$0.00'), demoBal: bal('$20,000.00'), today,
