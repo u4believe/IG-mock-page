@@ -565,5 +565,12 @@ class Component extends DCLogic {
   }
 }
 </script>
+<script>
+/* Route the "CFD trading" menu link to the CFD trading page. */
+document.addEventListener('click', function(e){
+  var a = e.target.closest ? e.target.closest('a') : null;
+  if(a && a.textContent.trim() === 'CFD trading'){ e.preventDefault(); location.href = 'IG%20CFD%20Trading.html'; }
+}, true);
+</script>
 </body>
 </html>
