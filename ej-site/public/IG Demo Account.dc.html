@@ -210,7 +210,7 @@ class Component extends DCLogic {
       f, on, bd, countries: ['Malaysia', 'Nigeria', 'Singapore', 'United Kingdom', 'Australia', 'South Africa', 'United Arab Emirates', 'India', 'Kenya', 'Ghana'],
       mkOpts: [['Yes', '✓'], ['No', '✕']].map(([label, icon]) => ({ label, icon, pick: () => this.setState({ mk: label }), border: s.mk === label ? '#087a52' : '#c4c4c4' })),
       showErr: s.tried && !valid, done: s.done, notDone: !s.done,
-      submit: () => valid ? (() => { try { localStorage.setItem('ej_user', JSON.stringify(f)); localStorage.setItem('ej_acct', JSON.stringify({ demo: true, docs: false })); } catch (e) {} this.setState({ done: true }); })() : this.setState({ tried: true }),
+      submit: () => valid ? (() => { try { localStorage.setItem('ej_user', JSON.stringify(f)); localStorage.setItem('ej_acct', JSON.stringify({ demo: true, docs: false })); } catch (e) {} if (window.signupSupabase) window.signupSupabase(f.email, f.pass, { first: f.first, last: f.last, username: f.user, phone: f.phone, country: f.country, account_type: 'demo' }); this.setState({ done: true }); })() : this.setState({ tried: true }),
       mktList: ['Indices', 'Forex', 'Shares', 'Commodities'],
       faqs: faqs.map(([q, a], i) => ({ q, a, open: s.faq === i, rot: s.faq === i ? 'rotate(45deg)' : 'none', toggle: () => this.setState({ faq: s.faq === i ? -1 : i }) })),
       points: ['Trades made through the demo account will not be subject to slippage, interest and dividend adjustments, or out of hours price movements',
@@ -229,6 +229,19 @@ class Component extends DCLogic {
     };
   }
 }
+</script>
+<script>
+/* Create the account in Supabase Auth via the server (service_role stays server-side). */
+window.signupSupabase = function(email, password, meta){
+  if(!email || !password){ return; }
+  fetch("/api/signup", {method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify({email:email, password:password, meta:meta||{}})})
+    .then(function(r){ return r.json(); })
+    .then(function(res){
+      if(res.ok){ try{ console.log("Supabase: account created for", res.email, res.id); }catch(e){} }
+      else { alert("Supabase sign-up failed: " + res.error); }
+    })
+    .catch(function(e){ alert("Could not reach sign-up server: " + e); });
+};
 </script>
 </body>
 </html>

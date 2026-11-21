@@ -70,10 +70,18 @@ a{color:inherit;text-decoration:none}
 
 .main{flex:1;display:flex;min-width:0;background:#e9eaec}
 
+/* Draggable dividers (everything is resizable except the sidebar) */
+.gutter{width:6px;flex-shrink:0;cursor:col-resize;background:#e3e4e6;position:relative}
+.gutter:hover{background:#c7cace}
+.gutter::after{content:"";position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:2px;height:26px;background:#b4b8bd;border-radius:2px}
+#gutterTicket{display:none}
+body.focus #gutterTicket{display:block}
+body.focus #gutterMarket{display:none}
+
 /* Market panel */
-.market-panel{width:664px;flex-shrink:0;background:#fff;display:flex;flex-direction:column;border-right:1px solid #d7d9dd}
-.mp-head{display:flex;align-items:center;justify-content:space-between;padding:16px 18px 14px}
-.mp-title{font-size:26px;font-weight:700;letter-spacing:-.02em}
+.market-panel{width:clamp(360px,40vw,664px);flex-shrink:0;background:#fff;display:flex;flex-direction:column;border-right:1px solid #d7d9dd}
+.mp-head{display:flex;align-items:center;justify-content:space-between;padding:clamp(12px,1.4vw,16px) clamp(12px,1.6vw,18px) 14px}
+.mp-title{font-size:clamp(20px,2.3vw,26px);font-weight:700;letter-spacing:-.02em}
 .mp-head-right{display:flex;align-items:center;gap:16px}
 .mp-add{background:#eef1f4;border:none;height:40px;padding:0 16px;border-radius:4px;font-size:13.5px;font-weight:600;color:#1a1a1a;cursor:pointer}
 .mp-add:hover{background:#e4e8ec}
@@ -103,9 +111,9 @@ td.neg{color:var(--red)}
 
 /* Chart panel */
 .chart-panel{position:absolute;inset:0;background:#fff;display:none;flex-direction:column}
-.cp-head{display:flex;align-items:center;justify-content:space-between;padding:14px 16px 10px}
-.cp-title-wrap{display:flex;align-items:center;gap:20px}
-.cp-title{font-size:24px;font-weight:700}
+.cp-head{display:flex;align-items:center;justify-content:space-between;padding:clamp(10px,1.3vw,14px) clamp(12px,1.5vw,16px) 10px}
+.cp-title-wrap{display:flex;align-items:center;gap:clamp(12px,1.8vw,20px)}
+.cp-title{font-size:clamp(18px,2.1vw,24px);font-weight:700}
 .cp-seg{display:flex;align-items:center;gap:18px;color:#333;font-size:14px}
 .cp-seg .s{display:flex;align-items:center;gap:5px;cursor:pointer;padding-bottom:6px;border-bottom:2px solid transparent}
 .cp-seg .s.active{border-bottom-color:var(--active)}
@@ -138,6 +146,62 @@ table.md{border-collapse:collapse;max-width:520px;width:100%}
 table.md td{padding:10px 8px;border-bottom:1px solid var(--line2);font-size:14px}
 table.md td:first-child{color:#6b7280}
 table.md td:last-child{text-align:right;font-weight:600;font-variant-numeric:tabular-nums}
+
+/* Trade ticket (Deal / Order / Alert / Info) — focus mode */
+.ticket{display:none;flex-direction:column;width:clamp(300px,26vw,380px);flex-shrink:0;background:#fff;border-left:1px solid #d7d9dd;overflow-y:auto}
+.ticket.show{display:flex}
+body.focus .market-panel{display:none}
+.tk-head{display:flex;align-items:center;gap:10px;padding:14px 16px;border-bottom:1px solid var(--line)}
+.tk-title{font-size:18px;font-weight:700}
+.tk-market{color:#6b7280;font-size:13px;flex:1}
+.tk-body{padding:16px;display:flex;flex-direction:column;gap:4px}
+.tk-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}
+.tk-side{display:flex;flex-direction:column;align-items:flex-start;gap:2px;border:none;border-radius:4px;padding:10px 12px;color:#fff;cursor:pointer;font-variant-numeric:tabular-nums}
+.tk-side span{font-size:11px;opacity:.9}
+.tk-side strong{font-size:18px}
+.tk-side.sell{background:#e8203a}
+.tk-side.buy{background:#0f9be0}
+.tk-lab{font-size:12px;color:#6b7280;margin-top:8px}
+.tk-input{height:38px;border:1px solid #cdd2d8;border-radius:4px;padding:0 10px;font-size:14px;font-family:inherit;background:#fff}
+select.tk-input{appearance:none}
+.tk-stepper{display:grid;grid-template-columns:38px 1fr 38px;gap:6px}
+.tk-stepper button{border:1px solid #cdd2d8;background:#f6f7f8;border-radius:4px;cursor:pointer;font-size:16px}
+.tk-place{margin-top:16px;height:44px;border:none;border-radius:4px;background:#1ea832;color:#fff;font-weight:700;font-size:15px;cursor:pointer}
+.tk-note{font-size:11px;color:#9aa1ad;margin:10px 0 0}
+.tk-info{width:100%;border-collapse:collapse}
+.tk-info td{padding:9px 4px;border-bottom:1px solid var(--line2);font-size:14px}
+.tk-info td:first-child{color:#6b7280}
+.tk-info td:last-child{text-align:right;font-weight:600;font-variant-numeric:tabular-nums}
+
+#sbBackdrop{display:none}
+
+/* ---------- Mobile (phones / small tablets) ---------- */
+@media (max-width:900px){
+  .topbar{padding:0 6px;overflow-x:auto}
+  .tbtn,.oneclick,.help{display:none}
+  .ws-tab{padding:0 6px}
+  .plus{display:none}
+  .balances{margin-left:auto}
+  .acct{margin-left:10px}
+  .acct>div>div:last-child{display:none}        /* hide "Acc no." line, keep CFD + ring */
+
+  /* Sidebar becomes an off-canvas drawer, toggled by the ☰ button */
+  .sidebar{position:fixed;left:0;top:48px;bottom:0;width:250px;transform:translateX(-100%);transition:transform .2s ease;z-index:300;box-shadow:2px 0 14px rgba(0,0,0,.25)}
+  .sidebar.open{transform:none}
+  #sbBackdrop.show{display:block;position:fixed;inset:48px 0 0 0;background:rgba(0,0,0,.35);z-index:290}
+
+  /* Market list fills the screen; resize handles off on touch */
+  .market-panel{width:100%!important;border-right:none}
+  .mp-title{font-size:22px}
+  .gutter{display:none!important}
+
+  /* Chart opens as a full-screen overlay when a market is tapped */
+  .workspace{position:fixed;inset:48px 0 0 0;z-index:150;display:none}
+  body.mchart .workspace{display:block}
+
+  /* Deal/Order/Alert/Info ticket is full-screen on mobile */
+  body.focus .ticket{position:fixed;inset:48px 0 0 0;width:100%!important;z-index:320}
+}
 </style>
 </head>
 <body>
@@ -166,8 +230,9 @@ table.md td:last-child{text-align:right;font-weight:600;font-variant-numeric:tab
     <div class="oneclick" onclick="toggleOneClick(this)">1-Click <span class="toggle"></span></div>
     <div class="help" onclick="toast('Help')"><span class="q">?</span> Help</div>
     <div class="acct" onclick="toast('Account ' + ACC_ID)"><span class="ring"></span><div><div class="cfd">CFD</div><div>Acc no.: <span id="accId">—</span></div></div><span class="caret" style="color:#9aa1ad">▾</span></div>
-    <div class="ico-btn" onclick="toast('Menu')">☰</div>
+    <div class="ico-btn" onclick="toggleSidebar()">☰</div>
   </header>
+  <div id="sbBackdrop" onclick="closeSidebar()"></div>
 
   <div class="body">
 
@@ -194,12 +259,12 @@ table.md td:last-child{text-align:right;font-weight:600;font-variant-numeric:tab
 
     <main class="main">
 
-      <section class="market-panel">
+      <section class="market-panel" id="marketPanel">
         <div class="mp-head">
           <div class="mp-title" id="mpTitle">Commodities</div>
           <div class="mp-head-right">
             <button class="mp-add" onclick="toast('Added to workspace')">Add to workspace ↗</button>
-            <button class="mp-x" onclick="closeChart()">✕</button>
+            <button class="mp-x" onclick="collapseMarkets()" title="Collapse market list">✕</button>
           </div>
         </div>
         <div class="mp-scroll">
@@ -212,6 +277,8 @@ table.md td:last-child{text-align:right;font-weight:600;font-variant-numeric:tab
           </table>
         </div>
       </section>
+
+      <div class="gutter" id="gutterMarket"></div>
 
       <section class="workspace">
         <div class="ws-empty" id="wsEmpty">
@@ -235,7 +302,7 @@ table.md td:last-child{text-align:right;font-weight:600;font-variant-numeric:tab
             <span class="burger" onclick="toast('Markets menu')">☰</span>
             <span class="nm"><span class="dot"></span><span id="cpName">—</span></span>
             <span class="chg" id="cpChg"></span>
-            <span class="cp-actions"><span onclick="toast('Deal ticket')">Deal</span><span onclick="toast('Order ticket')">Order</span><span onclick="toast('Alert set')">Alert</span><span onclick="toast('Market info')">Info</span></span>
+            <span class="cp-actions"><span onclick="openTicket('Deal')">Deal</span><span onclick="openTicket('Order')">Order</span><span onclick="openTicket('Alert')">Alert</span><span onclick="openTicket('Info')">Info</span></span>
           </div>
           <div class="cp-tabs">
             <span class="cp-tab active" data-tab="chart" onclick="setTab(this)">📈 Chart</span>
@@ -262,6 +329,18 @@ table.md td:last-child{text-align:right;font-weight:600;font-variant-numeric:tab
           </div>
         </div>
       </section>
+
+      <div class="gutter" id="gutterTicket"></div>
+
+      <!-- Trade ticket (narrower than the chart) -->
+      <aside class="ticket" id="ticket">
+        <div class="tk-head">
+          <span class="tk-title" id="tkTitle">Deal</span>
+          <span class="tk-market" id="tkMarket">—</span>
+          <button class="mp-x" onclick="closeTicket()" title="Close">✕</button>
+        </div>
+        <div class="tk-body" id="tkBody"></div>
+      </aside>
 
     </main>
   </div>
@@ -375,13 +454,17 @@ function loadQuotes(cat){
   }).catch(function(){});
 }
 
+function collapseMarkets(){ document.getElementById('marketPanel').style.display='none'; }
+function showMarkets(){ document.getElementById('marketPanel').style.display='flex'; }
+
 function selectCat(el){
   document.querySelectorAll('.nav-item.active').forEach(function(x){x.classList.remove('active');});
   el.classList.add('active');
   currentCat = el.getAttribute('data-cat');
+  showMarkets(); closeSidebar();
   document.getElementById('mpTitle').textContent = currentCat;
   renderTable(currentCat);
-  closeChart();
+  closeTicket();            // leave the current chart visible; only exit the ticket focus
   loadQuotes(currentCat);
   if(refreshTimer) clearInterval(refreshTimer);
   refreshTimer = setInterval(function(){ loadQuotes(currentCat); }, 20000);
@@ -437,13 +520,69 @@ function selectRow(tr){
   showPane('chart');
   document.getElementById('wsEmpty').style.display='none';
   document.getElementById('chartPanel').style.display='flex';
+  document.body.classList.add('mchart'); closeSidebar();
   buildTVChart(tv);
 }
 function closeChart(){
+  closeTicket();
+  document.body.classList.remove('mchart');
   selectedRow=null;
   document.getElementById('chartPanel').style.display='none';
   document.getElementById('wsEmpty').style.display='flex';
   document.querySelectorAll('tr.row.sel').forEach(function(x){x.classList.remove('sel');});
+}
+
+// ---------- Trade ticket (Deal / Order / Alert / Info) ----------
+function cellText(sel){ var e=selectedRow && selectedRow.querySelector(sel); return e ? e.textContent : '-'; }
+function dealHtml(kind, sell, buy){
+  return '<div class="tk-grid">'
+    + '<button class="tk-side sell" onclick="toast(\'Sell selected\')"><span>SELL</span><strong>'+sell+'</strong></button>'
+    + '<button class="tk-side buy" onclick="toast(\'Buy selected\')"><span>BUY</span><strong>'+buy+'</strong></button>'
+    + '</div>'
+    + (kind==='Order' ? '<label class="tk-lab">Order type</label><select class="tk-input"><option>Limit</option><option>Stop</option></select>'
+        + '<label class="tk-lab">Order level</label><input class="tk-input" value="'+buy+'">' : '')
+    + '<label class="tk-lab">Size</label><div class="tk-stepper"><button type="button">−</button><input class="tk-input" value="1"><button type="button">+</button></div>'
+    + '<label class="tk-lab">Stop distance</label><input class="tk-input" placeholder="points away">'
+    + '<label class="tk-lab">Limit distance</label><input class="tk-input" placeholder="points away">'
+    + '<button class="tk-place" onclick="toast(\''+kind+' placed (demo)\')">'+(kind==='Order'?'Place order':'Place deal')+'</button>'
+    + '<p class="tk-note">Demo ticket — no real order is placed.</p>';
+}
+function alertHtml(price){
+  return '<label class="tk-lab">Condition</label><select class="tk-input"><option>Price rises above</option><option>Price falls below</option></select>'
+    + '<label class="tk-lab">Price</label><input class="tk-input" value="'+price+'">'
+    + '<label class="tk-lab">Notify by</label><select class="tk-input"><option>Push notification</option><option>Email</option></select>'
+    + '<button class="tk-place" onclick="toast(\'Alert created (demo)\')">Create alert</button>'
+    + '<p class="tk-note">Demo — no real alert is set.</p>';
+}
+function infoHtml(name, sell, buy){
+  var tr=selectedRow;
+  return '<table class="tk-info">'
+    + '<tr><td>Market</td><td>'+name+'</td></tr>'
+    + '<tr><td>Sell</td><td>'+sell+'</td></tr>'
+    + '<tr><td>Buy</td><td>'+buy+'</td></tr>'
+    + '<tr><td>Change</td><td>'+((tr&&tr.dataset.change)||'-')+'</td></tr>'
+    + '<tr><td>% Change</td><td>'+((tr&&tr.dataset.pct)||'-')+'%</td></tr>'
+    + '<tr><td>Category</td><td>'+currentCat+'</td></tr>'
+    + '</table>';
+}
+function openTicket(kind){
+  if(!selectedRow) return;
+  document.body.classList.add('focus');
+  document.getElementById('marketPanel').style.display='none'; // leave only chart + ticket
+  var name=selectedRow.getAttribute('data-name');
+  var sell=cellText('.sell'), buy=cellText('.buy');
+  document.getElementById('tkTitle').textContent=kind;
+  document.getElementById('tkMarket').textContent=name;
+  var b=document.getElementById('tkBody');
+  if(kind==='Deal'||kind==='Order') b.innerHTML=dealHtml(kind, sell, buy);
+  else if(kind==='Alert') b.innerHTML=alertHtml(buy);
+  else b.innerHTML=infoHtml(name, sell, buy);
+  document.getElementById('ticket').classList.add('show');
+}
+function closeTicket(){
+  document.body.classList.remove('focus');
+  document.getElementById('marketPanel').style.display='flex'; // restore the market list
+  var t=document.getElementById('ticket'); if(t) t.classList.remove('show');
 }
 
 // Tabs / toggles
@@ -464,6 +603,55 @@ function toggleBalances(){
 
 var _tt;
 function toast(msg){ var t=document.getElementById('toast'); t.textContent=msg; t.style.opacity='1'; clearTimeout(_tt); _tt=setTimeout(function(){t.style.opacity='0';},1200); }
+
+// Mobile sidebar drawer
+function toggleSidebar(){
+  var sb=document.querySelector('.sidebar'), bd=document.getElementById('sbBackdrop');
+  var open=sb.classList.toggle('open'); bd.classList.toggle('show', open);
+}
+function closeSidebar(){
+  document.querySelector('.sidebar').classList.remove('open');
+  document.getElementById('sbBackdrop').classList.remove('show');
+}
+
+// ---------- Resizable dividers (sidebar stays fixed) ----------
+(function(){
+  var SIDEBAR=182, GUTTERS=12; // sidebar is fixed; reserve space for gutters
+  var drag=null, startX=0, startW=0;
+  // Transparent overlay captures the mouse during a drag so the chart iframe can't swallow mouseup.
+  var overlay=document.createElement('div');
+  overlay.style.cssText='position:fixed;inset:0;z-index:9999;cursor:col-resize;display:none';
+  document.body.appendChild(overlay);
+  function begin(e, target, sign, min, chartMin, half){
+    drag={target:target, sign:sign, min:min, chartMin:chartMin, half:half};
+    startX=e.clientX; startW=target.getBoundingClientRect().width;
+    overlay.style.display='block';
+    document.body.style.userSelect='none';
+    e.preventDefault();
+  }
+  function end(){
+    if(!drag) return;
+    drag=null; overlay.style.display='none'; document.body.style.userSelect='';
+  }
+  function move(e){
+    if(!drag) return;
+    if(e.buttons===0){ end(); return; }   // button already released (e.g. outside the window)
+    var max = drag.half ? Math.round(window.innerWidth/2)        // Deal/Order/Alert/Info: at most half the screen
+                        : (window.innerWidth - SIDEBAR - GUTTERS - drag.chartMin); // always leave the chart room
+    var w = startW + drag.sign*(e.clientX-startX);
+    w = Math.max(drag.min, Math.min(max, w));
+    drag.target.style.width = w+'px';
+  }
+  var gm=document.getElementById('gutterMarket'), gt=document.getElementById('gutterTicket');
+  gm.addEventListener('mousedown', function(e){ begin(e, document.getElementById('marketPanel'), 1, 240, 140, false); });
+  gt.addEventListener('mousedown', function(e){ begin(e, document.getElementById('ticket'), -1, 240, 140, true); }); // ticket capped at half screen
+  // Listen on both overlay and document, and bail out if the button is no longer pressed.
+  overlay.addEventListener('mousemove', move);
+  document.addEventListener('mousemove', move);
+  overlay.addEventListener('mouseup', end);
+  document.addEventListener('mouseup', end);
+  window.addEventListener('blur', end);
+})();
 
 // Init
 renderTable(currentCat);
